@@ -1,0 +1,48 @@
+"================ Editor ==================
+map <silent> <leader><cr> :noh<cr>
+map <Leader>bd :bd
+map <leader>lg <leader><space>
+
+" Vertical/Horizontal split
+nnoremap <leader>vs <C-w>v
+nnoremap <leader>hs <C-w>s
+
+" Autoindent opening and closing brackets
+imap <C-Return> <CR><CR><C-o>k<Tab>
+
+" Edit another file in the same directory as the current file
+"      uses expression to extract path from current file's path
+map <Leader>e :e <C-R>=escape(expand("%:p:h"),' ') . '/'<CR>
+map <Leader>s :vsp <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
+map <Leader>v :vnew <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
+
+"================ Directories ==================
+nmap <leader>ev :e ~/dotfiles/.vimrc<CR>
+nmap <leader>ep :e ~/dotfiles/.vim/plugins.vim<CR>
+nmap <leader>eg :e ~/dotfiles/.gvimrc<CR>
+nmap <leader>epr :e ~/dotfiles/.vim/projects.vim<CR>
+map <Leader>dr :e ~/Dropbox/
+map <Leader>oru :e ~/Dropbox/oru/
+
+"================ Buffers ==================
+map <C-0> :bn<cr>
+map <C-9> :bp<cr>
+map <leader>db :bd<cr>
+
+" ===> Folding
+nnoremap <Space> zA
+
+" ===> Window management
+map <C-b> :NERDTreeToggle<cr>
+nnoremap <D-0> :tabprevious<CR>
+nnoremap <D-9> :tabnext<CR>
+
+" Smart way to move between windows
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+" ===> Visual
+" Remove highlight when fuzzy search
+nnoremap <Enter> :noh<cr><esc>
