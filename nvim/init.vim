@@ -116,7 +116,7 @@ nnoremap <silent> <leader>to :call BgToggle()<cr>
 let g:gruvbox_bold = 0
 
 "===> deoplete
-let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 0
 
 "===> Supertab
 let g:SuperTabDefaultCompletionType = "<C-n>"
@@ -129,7 +129,7 @@ nmap <F8> :TagbarToggle<CR>
 "===> fzf-vim
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
-omap <leader><tab> <plug>(fzf-maps-o)
+omap <leader><tab> <plug>(fzf-maps-o0
 
 map <C-p> :Files<cr>
 
@@ -178,7 +178,7 @@ let g:ale_linters = {
 \}
 
 "===> vim-airline
-let g:airline_powerline_fonts = 0
+let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
