@@ -60,12 +60,13 @@ alias gitignore='cp ~/.gitignore .'
 
 # ===> Directory information
 # Color output based on system
-#if ls --help 2>&1 | grep -q -- --color
-#then
-#    alias ls='ls --color=always -Fh'
-#else
-#    alias ls='ls -FG'
-#fi
+if ls --help 2>&1 | grep -q -- --color
+then
+    alias ls='ls --color=always -Fh'
+else
+    alias ls='ls -FG'
+fi
+
 alias lh='ls -d .*' # show hidden files/directories only
 alias l='ls -al'
 alias lsa='ls -a'
@@ -118,8 +119,8 @@ gitprompt='$(__git_ps1 "(%s)")'
 arrow=$'\xe2\x86\x92'
 export PS1="$USER - \[$txtwht\]$twolevelprompt\[$fgcolor\]$gitprompt\[$txtylw\] $arrow \[$fgcolor\]"
 
-# This one isn't required for bash prompt and is a small bonus 
-# which gives you git-specific auto-completion. Sometimes this can slow 
+# This one isn't required for bash prompt and is a small bonus
+# which gives you git-specific auto-completion. Sometimes this can slow
 # things down. Feel free to disable it if you are experiencing latency.
 source $HOME/dotfiles/bash/git-completion.sh
 
@@ -147,4 +148,4 @@ path() {
 
 
 # =================== Sources ====================== #
-source /usr/share/fzf/shell/key-bindings.bash
+#source /usr/share/fzf/shell/key-bindings.bash
