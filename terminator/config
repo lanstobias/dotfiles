@@ -1,7 +1,9 @@
 [global_config]
+  borderless = True
+  dbus = False
   enabled_plugins = TerminatorThemes, LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
   inactive_color_offset = 1.0
-  tab_position = hidden
+  tab_position = bottom
   title_font = Inconsolata 14
   title_inactive_bg_color = "#00002c"
   title_inactive_fg_color = "#ff0000"
@@ -23,17 +25,16 @@
 [plugins]
 [profiles]
   [[default]]
-    background_color = "#00002c"
+    background_color = "#282828"
     cursor_color = "#bbbbbb"
-    font = Hasklig Medium 10
-    foreground_color = "#ffffff"
-    palette = "#000000:#f9555f:#21b089:#fef02a:#589df6:#944d95:#1f9ee7:#bbbbbb:#555555:#fa8c8f:#35bb9a:#ffff55:#589df6:#e75699:#3979bc:#ffffff"
+    font = FuraCode Nerd Font Mono weight=450 10
+    foreground_color = "#ebdbb2"
+    palette = "#282828:#cc241d:#98971a:#d79921:#458588:#b16286:#689d6a:#a89984:#928374:#fb4934:#b8bb26:#fabd2f:#83a598:#d3869b:#8ec07c:#ebdbb2"
     scrollback_infinite = True
     scrollbar_position = hidden
     show_titlebar = False
     use_system_font = False
   [[Aci]]
-    background_type = transparent
     cursor_color = "#aaaaaa"
   [[Ayu mirage]]
     background_color = "#212733"
@@ -55,17 +56,12 @@
     cursor_color = "#d4605a"
     foreground_color = "#dbdae0"
     palette = "#292f33:#cb1e2d:#edb8ac:#b7ab9b:#2e78c2:#c0236f:#309186:#eae3ce:#092028:#d4605a:#d4605a:#a86671:#7c85c4:#5c5db2:#819090:#fcf4df"
-  [[FirefoxDev]]
+  [[Firewatch]]
     background_color = "#0e1011"
     cursor_color = "#708284"
     foreground_color = "#7c8fa4"
     palette = "#002831:#e63853:#5eb83c:#a57706:#359ddf:#d75cff:#4b73a2:#dcdcdc:#001e27:#e1003f:#1d9000:#cd9409:#006fc0:#a200da:#005794:#e2e2e2"
-  [[Firewatch]]
-    background_color = "#1e2027"
-    cursor_color = "#f6f7ec"
-    foreground_color = "#9ba2b2"
-    palette = "#585f6d:#d95360:#5ab977:#dfb563:#4d89c4:#d55119:#44a8b6:#e6e5ff:#585f6d:#d95360:#5ab977:#dfb563:#4c89c5:#d55119:#44a8b6:#e6e5ff"
-  [[Galaxy]]
+  [[Grape]]
     background_color = "#1d2837"
     cursor_color = "#bbbbbb"
     font = InconsolataGo Nerd Font Bold 15
@@ -75,11 +71,6 @@
     scrollbar_position = hidden
     show_titlebar = False
     use_system_font = False
-  [[Grape]]
-    background_color = "#171423"
-    cursor_color = "#a288f7"
-    foreground_color = "#9f9fa1"
-    palette = "#2d283f:#ed2261:#1fa91b:#8ddc20:#487df4:#8d35c9:#3bdeed:#9e9ea0:#59516a:#f0729a:#53aa5e:#b2dc87:#a9bcec:#ad81c2:#9de3eb:#a288f7"
   [[New Profile]]
     cursor_color = "#aaaaaa"
   [[Whatever]]
