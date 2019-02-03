@@ -1,41 +1,53 @@
-# i3 config file (v4)
+# i3 config file
+# Lots of stuff borrowed from: http://github.com/jayywolff
 
-# Variables
-set $scriptPath $HOME/.config/i3/scripts
-
-# Default modkey
+# Modkey
 set $mod Mod1
+
+# Set font
+#font pango:FuraMonoForPowerline Nerd Font Regular 13
+font pango:Noto Sans 7
+
+# Gaps
+gaps inner 10
+gaps outer 0
+smart_borders on
+new_window normal 1
+new_float normal 1
+new_window none
+for_window [class="^.*"] border pixel 1
 
 # Hide titlebar
 new_window pixel
 
-# i3-gaps
-gaps inner 10
+# Blazing fast key repeat
+exec xset r rate 175 25
 
-# Font for window titles
-font pango:DejaVu Sans Mono, Terminus Bold Semi-Condensed 11
+# Resolution
+exec xrandr -s 1680x1050
+
+# Gruvbox (dark) colors
+set $color_normal_white  #a89984
+set $color_bright_white  #ebdbb2
+set $color_normal_gray   #222222
+set $color_bright_gray   #3c3836
+set $color_bright_yellow #d79921
+set $color_normal_black  #282828
+set $color_unused #ff0000
+
+# Colors                  border                 background             text                   indicator       child_border
+client.focused            $color_bright_gray     $color_bright_gray     $color_bright_white    $color_unused   $color_normal_white
+client.focused_inactive   $color_bright_gray     $color_bright_gray     $color_bright_white    $color_unused   $color_normal_black
+client.unfocused          $color_normal_gray     $color_normal_gray     $color_normal_white    $color_unused   $color_normal_black
+client.urgent             $color_bright_yellow   $color_bright_yellow   $color_normal_black    $color_unused   $color_unused
+client.placeholder $color_unused $color_normal_black $color_unused $color_unused $color_unused
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # Start rofi
-# bindsym $mod+d exec rofi -show run -lines 20 -eh 1.3 -opacity "85" -bw 0 -font "monospace 10"
+#bindsym $mod+d exec rofi -show run -lines 20 -eh 1.3 -opacity "85" -bw 0 -font "monospace 10"
 bindsym $mod+d exec rofi -show drun -opacity "80"
-
-new_window normal 1
-new_float normal 1
-smart_borders on
-new_window none
-
-for_window [class="^.*"] border pixel 2
-
-# Fix window border issue
-new_window none
-
-# Scripts..
-exec --no-startup-id feh --bg-fill ~/Pictures/wallpapers/ocean3.jpg
-
-exec xrandr -s 1680x1050
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -43,24 +55,79 @@ floating_modifier $mod
 # reload the configuration file
 bindsym $mod+Shift+c reload
 
-######## Application shortcuts #######
 # Webbrowser
 bindsym $mod+Shift+Return exec firefox
 
 # Terminal
 bindsym $mod+Return exec terminator
 
-# Files
-bindsym $mod+Shift+f exec Files
+#custom app commands (?i) just means case insenitive..
+for_window [class="(?i)feh"] floating enable
+for_window [class="(?i)pavucontrol"] floating enable
+for_window [class="(?i)qemu-system-x86_64"] floating enable
+#for_window [class="VirtualBox"] floating enable
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [title="About Mozilla Firefox"] floating enable
+for_window [title="About Nightly"] floating enable
+for_window [title="Library"] floating enable
+for_window [window_role="Preferences"] floating enable
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+for_window [window_type="mpv"] floating enable
+
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+    set $size 10
+    # These bindings trigger as soon as you enter the resize mode
+    bindsym h resize shrink width $size px or $size ppt
+    bindsym l resize grow width $size px or $size ppt
+    bindsym j resize grow height $size px or $size ppt
+    bindsym k resize shrink height $size px or $size ppt
+    #bindsym odiaeresis resize grow width 2 px or 5 ppt
+
+    # same bindings, but for the arrow keys
+    bindsym Left resize shrink width $size px or $size ppt
+    bindsym Down resize grow height $size px or $size ppt
+    bindsym Up resize shrink height $size px or $size ppt
+    bindsym Right resize grow width $size px or $size ppt
+
+    # back to normal: Enter or Escape or $mod+r
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# Bar settings
+bar {
+    status_command i3blocks -c ~/.config/i3/i3blocks/i3blocks.conf
+    i3bar_command i3bar -t
+    position top
+
+    colors {
+        # Whole color settings
+        background $color_normal_gray
+        separator  $color_bright_gray
+        statusline $color_bright_white
+
+        # Type             border                 background              font
+        focused_workspace  $color_bright_gray     $color_bright_gray      $color_bright_white
+        active_workspace   $color_unused          $color_unused           $color_unused
+        inactive_workspace $color_normal_gray     $color_normal_gray      $color_normal_white
+        urgent_workspace   $color_bright_yellow   $color_bright_yellow    $color_normal_black
+    }
+
+}
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # Move between windows
-#bindsym $mod+j focus left
-#bindsym $mod+k focus down
-#bindsym $mod+l focus up
-#bindsym $mod+semicolon focus right
 bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
@@ -77,7 +144,6 @@ bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
-#bindsym $mod+Shift+odiaeresis move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -86,16 +152,16 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+b split v
+bindsym $mod+shift+b split v
 
 # split in vertical orientation
-bindsym $mod+s split h
+bindsym $mod+shift+s split h
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-#bindsym $mod+s layout stacking
+bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
@@ -108,136 +174,47 @@ bindsym $mod+space focus mode_toggle
 # focus the parent container
 bindsym $mod+a focus parent
 
-# change volume or toggle mute
-bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks
-bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+10 i3blocks
-bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
+# Workspaces
+focus_follows_mouse no
 
-# focus the child container
-#bindsym $mod+d focus child
+set $workspace1 workspace number 1
+set $workspace2 workspace number 2
+set $workspace3 workspace number 3
+set $workspace4 workspace number 4
+set $workspace5 workspace number 5
+set $workspace6 workspace number 6
+set $workspace7 workspace number 7
+set $workspace8 workspace number 8
+set $workspace9 workspace number 9
+set $workspace0 workspace number 10
 
-# Define names for default workspaces for which we configure key bindings later on.
-# We use variables to avoid repeating the names in multiple places.
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
+# Switch to workspace using number row
+bindsym $mod+1 $workspace1
+bindsym $mod+2 $workspace2
+bindsym $mod+3 $workspace3
+bindsym $mod+4 $workspace4
+bindsym $mod+5 $workspace5
+bindsym $mod+6 $workspace6
+bindsym $mod+7 $workspace7
+bindsym $mod+8 $workspace8
+bindsym $mod+9 $workspace9
+bindsym $mod+0 $workspace0
 
-# switch to workspace
-bindsym $mod+1 workspace $ws1
-bindsym $mod+2 workspace $ws2
-bindsym $mod+3 workspace $ws3
-bindsym $mod+4 workspace $ws4
-bindsym $mod+5 workspace $ws5
-bindsym $mod+6 workspace $ws6
-bindsym $mod+7 workspace $ws7
-bindsym $mod+8 workspace $ws8
-bindsym $mod+9 workspace $ws9
-bindsym $mod+0 workspace $ws10
+# Move window to workspace using number row
+bindsym $mod+Shift+1 move container to $workspace1
+bindsym $mod+Shift+2 move container to $workspace2
+bindsym $mod+Shift+3 move container to $workspace3
+bindsym $mod+Shift+4 move container to $workspace4
+bindsym $mod+Shift+5 move container to $workspace5
+bindsym $mod+Shift+6 move container to $workspace6
+bindsym $mod+Shift+7 move container to $workspace7
+bindsym $mod+Shift+8 move container to $workspace8
+bindsym $mod+Shift+9 move container to $workspace9
+bindsym $mod+Shift+0 move container to $workspace0
 
-# move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace $ws1
-bindsym $mod+Shift+2 move container to workspace $ws2
-bindsym $mod+Shift+3 move container to workspace $ws3
-bindsym $mod+Shift+4 move container to workspace $ws4
-bindsym $mod+Shift+5 move container to workspace $ws5
-bindsym $mod+Shift+6 move container to workspace $ws6
-bindsym $mod+Shift+7 move container to workspace $ws7
-bindsym $mod+Shift+8 move container to workspace $ws8
-bindsym $mod+Shift+9 move container to workspace $ws9
-bindsym $mod+Shift+0 move container to workspace $ws10
-
-# Assign apps to specific workspaces
-assign [class="firefox"] $ws1
-assign [class="spotify"] $ws7
-
-# Gruvbox colors
-set $darkRed     #cc241d
-set $darkGreen   #98971a
-set $darkAqua    #8ec07c
-set $darkBlue    #458588
-set $darkPurple  #b16286
-set $darkYellow  #d79921
-set $darkOrange  #d65d0e
-
-set $lightRed    #fb4934
-set $lightGreen  #b8bb26
-set $lightAqua   #689d6a
-set $lightBlue   #83a598
-set $lightPurple #d3869b
-set $lightYellow #fabd2f
-set $lightOrange #fe8019
-
-set $lightCream  #fbf1c7
-
-# RGB
-set $cyan0	 #4ec2f7
-set $silver0 #e4e4e4
-set $orange  #ff8700
-
-# RGBA
-set $cyan	 #4ec2f799
-set $acqua	 #00708999
-set $wine 	 #72003e99
-set $magenta #af005f99
-set $silver  #e4e4e499
-set $toxic   #8EC00099
-set $elegant #00002c00
-
-# Set some nice colors      border	   background  text	       indicator
-client.focused              $lightBlue $lightBlue  $lightCream $darkRed
-client.unfocused            $darkBlue  $lightBlue  $lightCream $darkRed
-client.focused_inactive     $darkBlue  $lightBlue  $lightCream $darkRed
-client.urgent               $darkRed   $lightBlue  $lightCream $darkRed
-client.placeholder $magenta $magenta   $lightBlue  $lightCream $darkRed
-
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-
-# resize window (you can also use the mouse for that)
-mode "resize" {
-    # These bindings trigger as soon as you enter the resize mode
-    bindsym j resize shrink width 2 px or 2 ppt
-    bindsym k resize grow height 2 px or 2 ppt
-    bindsym l resize shrink height 2 px or 2 ppt
-    bindsym odiaeresis resize grow width 2 px or 5 ppt
-
-    # same bindings, but for the arrow keys
-    bindsym Left resize shrink width 2 px or 2 ppt
-    bindsym Down resize grow height 2 px or 2 ppt
-    bindsym Up resize shrink height 2 px or 2 ppt
-    bindsym Right resize grow width 2 px or 2 ppt
-
-    # back to normal: Enter or Escape or $mod+r
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-    bindsym $mod+r mode "default"
-}
-bindsym $mod+r mode "resize"
-
-# Bar settings
-bar {
-    status_command i3blocks -c ~/.config/i3/i3blocks/i3blocks.conf
-    i3bar_command i3bar -t
- 	position top
-    font pango: SauceCodePro Nerd Font Black 9
-    colors {
-        # Border	        # Background        # Text
-		focused_workspace   $silver0 $silver0   $elegant
-		active_workspace    $elegant $elegant   $orange
-		inactive_workspace  $elegant $elegant   $cyan0
-		urgent_workspace    $acqua   $acqua     $silver0
-		background          $elegant
-    }
-}
-
-# Startup programs
-exec --no-startup-id compton -f # Compositor for window transparency
-exec --no-startup-id notify-send "Welcome back Tobias!"
+# Autostart
+exec_always --no-startup-id feh --bg-scale /usr/share/background/mountains.jpg
+exec_always python3 ~/.config/i3/i3-autoname-workspaces.py &
+exec --no-strtup-id notify-send "Welcome back Tobias!"
 exec_always compton --config ~/.config/i3/compton.conf
+
