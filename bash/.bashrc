@@ -106,6 +106,8 @@ alias localip="ipconfig getifaddr en1"
 alias vim="nvim"
 alias vimh="nvim ."
 
+# ===> Other
+alias less="view"
 
 # =================== Prompt ======================= #
 source $HOME/dotfiles/bash/git-prompt.sh
