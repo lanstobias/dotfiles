@@ -22,7 +22,7 @@ gaps outer 0
 ####################### Workspaces ##########################
 focus_follows_mouse no
 default_border pixel 1
-default_floating_border pixel 1
+default_floating_border none
 hide_edge_borders smart
 popup_during_fullscreen smart
 
@@ -77,8 +77,8 @@ set $color_unused        $color_gray
 
 # Colors                  border                background            text            indicator           child_border
 client.focused            $color_light_blue     $color_light_blue     $color_bg0      $color_light_blue   $color_light_blue
-client.focused_inactive   $color_gray           $color_gray           $color_fg0      $color_gray         $color_gray
-client.unfocused          $color_gray           $color_gray           $color_fg0      $color_gray         $color_gray
+client.focused_inactive   $color_bg2            $color_bg2            $color_fg0      $color_bg4          $color_bg0
+client.unfocused          $color_bg2            $color_bg2            $color_fg0      $color_bg4          $color_bg2
 client.urgent             $color_light_orange   $color_light_orange   $color_bg0      $color_unused       $color_unused
 client.placeholder        $color_unused         $color_bg0            $color_unused   $color_unused       $color_unused
 
@@ -106,7 +106,7 @@ bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+bindsym $mod+Shift+space floating toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -123,7 +123,7 @@ bindsym $mod+d exec rofi -show drun -opacity "80"
 ######################## Resize Window ###########################
 # Resize window (you can also use the mouse for that)
 mode "resize" {
-    set $size 10
+    set $size 5
     # These bindings trigger as soon as you enter the resize mode
     bindsym h resize shrink width $size px or $size ppt
     bindsym l resize grow width $size px or $size ppt
