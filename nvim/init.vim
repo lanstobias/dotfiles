@@ -19,7 +19,8 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'majutsushi/tagbar'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'junegunn/fzf.vim'
-"Plug 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter'
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'w0rp/ale'
 Plug 'ntpeters/vim-better-whitespace'
 
@@ -191,6 +192,9 @@ let g:airline_right_sep = ' '
 let g:airline_right_alt_sep = '|'
 let g:airline_theme= 'gruvbox'
 
+
+"===> vim-gitgutter
+let g:gruvbox_sign_column = 'bg0_h'
 
 "====================== Functions ======================="
 " Read the current hour and return string with soft, medium
