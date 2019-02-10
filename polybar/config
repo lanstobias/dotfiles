@@ -1,3 +1,5 @@
+; vim:ft=dosini
+
 [colors]
 ; Gruvbox Dark
 darkred = #cc241d
@@ -188,7 +190,7 @@ ramp-free-7 = █
 type = internal/date
 interval = 59
 
-date = "%m %b "
+date = "%d %b "
 
 time = %H:%M
 
@@ -277,3 +279,4 @@ screenchange-reload = true
 [global/wm]
 margin-top = 5
 margin-bottom = 5
+
