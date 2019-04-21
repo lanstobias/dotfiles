@@ -27,12 +27,16 @@ Plugin 'myusuf3/numbers.vim'                       " Relative line numbers
 " ===> Color Scheme
 Plugin 'tomasiser/vim-code-dark'
 Plugin 'sjl/badwolf'
+Plugin 'haishanh/night-owl.vim'
+Plugin 'trusktr/seti.vim'
+Plugin 'morhetz/gruvbox'
 
 " ===> Navigation
 Plugin 'kien/ctrlp.vim'                            " Fuzzy file search
 
 " ===> IDE-like plugins
 Plugin 'scrooloose/nerdtree'                       " Filetree
+Plugin 'Valloric/YouCompleteMe'                    " Autocomplete engine
 
 " ===> Language support
 Plugin 'octol/vim-cpp-enhanced-highlight'          " Enhanced c++ syntax highlighting
@@ -48,7 +52,10 @@ filetype plugin indent on                          " required
 
 " ================= Plugin Settings ====================
 " ===> vim-code-dark
-let g:codedark_conservative = 0
+" let g:codedark_conservative = 0
+
+" =>> gruvbox
+let g:gruvbox_bold = 0
 
 " ===> vim-git-gutter
 let g:gitgutter_terminal_reports_focus = 0
@@ -69,7 +76,9 @@ let g:NERDCompactSexyComs = 1"
 " ===> Airline
 let g:airline_powerline_fonts = 0
 set rtp+=$HOME/.local/lib/python2.7/site-packages/powerline/bindings/vim/
-let g:airline_theme='codedark'
+let g:airline_theme='gruvbox'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'jsformatter'
 
+" ===> YCM
+let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
