@@ -1,0 +1,48 @@
+{
+    "editor.fontSize": 13,
+    "todo-tree.defaultHighlight": {
+        "foreground": "green",
+        "type": "none"
+    },
+    "todo-tree.customHighlight": {
+        "TODO": {},
+        "FIXME": {}
+    },
+    "sync.gist": "e26eedb43e1d75e309c4628e77bc2f34",
+    "sync.quietSync": false,
+    "sync.removeExtensions": true,
+    "sync.syncExtensions": true,
+    "sync.autoDownload": false,
+    "sync.autoUpload": false,
+    "sync.forceDownload": false,
+    "workbench.colorTheme": "Gruvbox Dark Medium",
+    "editor.cursorBlinking": "smooth",
+    "editor.cursorStyle": "block",
+    "editor.fontFamily": "Fira Code",
+    "editor.fontWeight": "500",
+    "editor.minimap.enabled": false,
+    "editor.minimap.maxColumn": 99,
+    "files.insertFinalNewline": true,
+    "workbench.fontAliasing": "antialiased",
+    "workbench.tips.enabled": false,
+    "breadcrumbs.symbolPath": "off",
+    "workbench.iconTheme": "file-icons",
+    "editor.lineNumbers": "relative",
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+              "scope": "comment",
+              "settings": {
+                "fontStyle": "normal"
+              }
+            }
+        ]
+    },
+    "workbench.statusBar.feedback.visible": false,
+    "workbench.activityBar.visible": true,
+    "theme-by-language.themes": {
+        "*": "Cyberpunk",
+        "markdown": "Material Theme High Contrast"
+    },
+    "window.zoomLevel": 0
+}
