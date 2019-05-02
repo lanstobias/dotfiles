@@ -1,5 +1,5 @@
 {
-    "editor.fontSize": 13,
+    "editor.fontSize": 14,
     "todo-tree.defaultHighlight": {
         "foreground": "green",
         "type": "none"
@@ -15,18 +15,15 @@
     "sync.autoDownload": false,
     "sync.autoUpload": false,
     "sync.forceDownload": false,
-    "workbench.colorTheme": "Gruvbox Dark Medium",
-    "editor.cursorBlinking": "smooth",
-    "editor.cursorStyle": "block",
-    "editor.fontFamily": "Fira Code",
-    "editor.fontWeight": "500",
+    "workbench.colorTheme": "Gruvbox Dark Hard",
+    "editor.fontFamily": "Iosevka",
     "editor.minimap.enabled": false,
     "editor.minimap.maxColumn": 99,
     "files.insertFinalNewline": true,
     "workbench.fontAliasing": "antialiased",
     "workbench.tips.enabled": false,
     "breadcrumbs.symbolPath": "off",
-    "workbench.iconTheme": "file-icons",
+    "workbench.iconTheme": "vscode-icons",
     "editor.lineNumbers": "relative",
     "editor.tokenColorCustomizations": {
         "textMateRules": [
@@ -44,5 +41,9 @@
         "*": "Cyberpunk",
         "markdown": "Material Theme High Contrast"
     },
-    "window.zoomLevel": 0
+    "window.zoomLevel": 0,
+    "editor.fontWeight": "500",
+    "editor.cursorBlinking": "solid",
+    "editor.hideCursorInOverviewRuler": true,
+    "workbench.editor.showTabs": false
 }

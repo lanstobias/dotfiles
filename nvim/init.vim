@@ -8,6 +8,10 @@ Plug 'morhetz/gruvbox'
 Plug 'ryanoasis/vim-devicons'
 Plug 'Yggdroot/indentLine'
 Plug 'myusuf3/numbers.vim'
+Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'sjl/badwolf'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+
 
 "===> Functionality
 Plug 'tpope/vim-fugitive'
@@ -18,29 +22,19 @@ Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'majutsushi/tagbar'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'easymotion/vim-easymotion'
+Plug 'kshenoy/vim-signature'
+Plug 'mhinz/vim-signify'
+Plug 'terryma/vim-multiple-cursors'
+
+" --> fzf
 Plug 'junegunn/fzf.vim'
-Plug 'airblade/vim-gitgutter'
+Plug '/usr/local/opt/fzf'
+
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'w0rp/ale'
-Plug 'ntpeters/vim-better-whitespace'
 
 call plug#end()
-
-
-"======================= Visual =========================="
-syntax on                                                 " Enable syntax
-set background=dark                                       " Set dark background
-set termguicolors                                         " Opaque Background
-colorscheme gruvbox                                       " Set colorscheme
-set number                                                " Enable line numbers
-set cursorline                                            " Highlight current line
-set smartcase                                             " Be smart about cases when searching
-set ffs=unix,dos,mac                                      " Set Unix as standart file type
-hi clear SignColumn                                       " Clear color for the gutter
-
-"===> No arrow keys
-imap <up> <nop>
-imap <down> <nop>
 
 
 "======================= General ========================="
@@ -62,9 +56,12 @@ set nojoinspaces                                          " Prevents inserting t
 set splitbelow                                            " Horizontal split below current
 set splitright                                            " Vertical split to right of current
 set scrolloff=5                                           " Keep 5 lines above and below while scrolling
-set lbr
-set cpoptions+=$                                          " Cool trick to show what you're replacing
 set nowrap                                                " Don't wrap the text
+set textwidth=99                                          " Set width of text to 99
+set foldmethod=syntax                                     " Folds pecified to syntax definitions
+set foldlevel=99                                          " Open files unfolded
+set lbr
+
 
 "======================= Mapping ========================="
 " Remove search highlight with return
@@ -78,7 +75,7 @@ nnoremap <Enter> :noh<cr><esc>
 imap <C-Return> <CR><CR><C-o>k<Tab>
 
 " Direcories
-nmap <leader>ev :e /home/tobiaslans/dotfiles/nvim/init.vim<CR>
+nmap <leader>ev :e ~/dotfiles/nvim/init.vim<CR>
 
 " Folding
 nnoremap <Space> zA
@@ -87,20 +84,9 @@ nnoremap <Space> zA
 nnoremap <leader>vs <C-w>v
 nnoremap <leader>hs <C-w>s
 
-" Toggle NERDTree
-map <C-b> :NERDTreeToggle<cr>
-"
 " Create tabs
 nnoremap <leader>tn :tabnew<CR>
 nnoremap <leader>te :Te<CR>
-
-" Toggle tabs
-nnoremap <left> gT
-nnoremap <right> gt
-
-" Resize panes
-nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
-nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR><Paste>
 
 " Smart way to move between windows
 map <C-j> <C-W>j
@@ -108,19 +94,24 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-" Toggle background
-nnoremap <silent> <leader>to :call BgToggle()<cr>
+" Cycle tabs with Shift
+nnoremap H gT
+nnoremap L gt
 
 
 "=================== Plugin Settings ====================="
 "===> gruvbox
-let g:gruvbox_bold = 0
+let g:gruvbox_bold = 1
+let g:gruvbox_sign_column = "bg0"
+let g:gruvbox_contrast_dark = "hard"
+
+"===> badwolf
+let g:badwolf_darkgutter = 0
 
 "===> deoplete
-let g:deoplete#enable_at_startup = 0
-
-"===> Supertab
-let g:SuperTabDefaultCompletionType = "<C-n>"
+let g:deoplete#enable_at_startup = 1
+let g:auto_complete_delay = 0
+let g:completor_min_chars = 1
 
 "===> TagBar
 let g:tagbar_width = 30
@@ -128,11 +119,8 @@ let g:tagbar_iconchars = ['↠', '↡']
 nmap <F8> :TagbarToggle<CR>
 
 "===> fzf-vim
-nmap <leader><tab> <plug>(fzf-maps-n)
-xmap <leader><tab> <plug>(fzf-maps-x)
-omap <leader><tab> <plug>(fzf-maps-o0
-
-map <C-p> :Files<cr>
+nnoremap <C-p> :GFiles<Cr>
+nnoremap <C-+> :Files<Cr>
 
 " This is the default extra key bindings
 let g:fzf_action = {
@@ -140,24 +128,8 @@ let g:fzf_action = {
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
 
-let g:fzf_layout = { 'window': 'enew' }
-let g:fzf_layout = { 'window': '-tabnew' }
-let g:fzf_layout = { 'window': '10split enew' }
-
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'Type'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Character'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
+" Default fzf layout
+let g:fzf_layout = { 'down': '~40%' }
 
 "===> Ale
 let g:ale_sign_column_always = 1
@@ -165,8 +137,8 @@ hi clear ALEErrorSign
 hi clear ALEWarningSign
 hi link ALEErrorSign GruvboxRed
 hi link ALEWarningSign GruvboxYellow
-let g:ale_sign_error = '◉'
-let g:ale_sign_warning = '◉'
+let g:ale_sign_error = '●'
+let g:ale_sign_warning = '●'
 let g:ale_echo_msg_error_str = '✖ Error'
 let g:ale_echo_msg_format = '[#%linter%#] %s [%severity%]'
 let g:ale_echo_msg_warning_str = '⚠ Warning'
@@ -177,6 +149,10 @@ let g:ale_set_highlights = 1
 let g:ale_linters = {
 \   'c': ['cppcheck'],
 \}
+nnoremap <leader>er :let ale_open_list<CR>
+
+"===> NERDTree
+map <C-b> :NERDTreeToggle<cr>
 
 "===> vim-airline
 let g:airline_powerline_fonts = 1
@@ -192,45 +168,53 @@ let g:airline_right_sep = ' '
 let g:airline_right_alt_sep = '|'
 let g:airline_theme= 'gruvbox'
 
+"===> vim-easymotion
+" <Leader>f{char} to move to {char}
+map  <Leader>f <Plug>(easymotion-bd-f)
+nmap <Leader>f <Plug>(easymotion-overwin-f)
 
-"===> vim-gitgutter
-let g:gruvbox_sign_column = 'bg0_h'
+" Move to line
+map <Leader>L <Plug>(easymotion-bd-jk)
+nmap <Leader>L <Plug>(easymotion-overwin-line)
+
+"===> vim-signify
+let g:signify_vcs_list = ['git']
+let g:signify_realtime = 1
+let g:signify_sign_show_count = 0
+nnoremap <leader>gt :SignifyToggle<CR>
+
+
+"======================= Visual =========================="
+syntax on                                                 " Enable syntax
+set background=dark                                       " Set dark background
+set termguicolors                                         " Opaque Background
+colorscheme gruvbox                                       " Set colorscheme
+set number                                                " Enable line numbers
+set cursorline                                            " Highlight current line
+set smartcase                                             " Be smart about cases when searching
+set ffs=unix,dos,mac                                      " Set Unix as standart file type
+hi clear SignColumn                                       " Clear color for the gutter
+set colorcolumn=+1                                        " Color column 100
+set linespace=3
+hi ColorColumn guibg=#282828
+hi CursorLine term=bold cterm=bold guibg=#282828
+hi Folded guibg=#282828
+hi CursorLineNr guibg=#282828
+
 
 "====================== Functions ======================="
-" Read the current hour and return string with soft, medium
-" or hard contrast for e.g. gruvbox
-function! SetContrastBasedOnTime(color)
-    let hour = strftime("%H")
-    let l:contrast = "medium"
-
-    if (hour > 06 && hour < 20)
-        let l:contrast="medium"
-    else
-        let l:contrast="hard"
-    endif
-
-    if (a:color == "light")
-        let g:gruvbox_contrast_light = l:contrast
-    else
-        let g:gruvbox_contrast_dark = l:contrast
-    endif
-endfunction
-
-" Set gruvbox background
-function! SetGruvboxBackground(color)
-    call SetContrastBasedOnTime(a:color)
-    if (a:color == "light")
+" Toggle dark/light gruvbox colorscheme
+function! BgToggle()
+    if (&background == "dark")
+        let g:gruvbox_sign_column = "bg0"
+        let g:gruvbox_contrast_light = "medium"
         set background=light
-    elseif (a:color == "dark")
+    elseif (&background == "light")
+        let g:gruvbox_sign_column = "bg0"
+        let g:gruvbox_contrast_dark = "hard"
         set background=dark
     endif
 endfunction
 
-" Toggle dark/light gruvbox colorscheme
-function! BgToggle()
-    if (&background == "dark")
-        call SetGruvboxBackground("light")
-    elseif (&background == "light")
-        call SetGruvboxBackground("dark")
-    endif
-endfunction
+nnoremap <silent> <leader>to :call BgToggle()<cr>
+
