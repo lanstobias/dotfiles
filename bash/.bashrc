@@ -59,7 +59,7 @@ alias gv='git log --pretty=format:'%s' | cut -d " " -f 1 | sort | uniq -c | sort
 alias gitignore='cp ~/.gitignore .'
 
 # ===> Directory information
-# Color output based on system
+#Color output based on system
 if ls --help 2>&1 | grep -q -- --color
 then
     alias ls='ls --color=always -Fh'
@@ -151,3 +151,6 @@ path() {
 
 # =================== Sources ====================== #
 #source /usr/share/fzf/shell/key-bindings.bash
+source ~/catkin_ws/devel/setup.bash
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

@@ -114,9 +114,12 @@ bindsym $mod+a focus parent
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+# move all floating windows to the scratchpad
+bindsym $mod+x [floating] move scratchpad
+
 # <====== Applications ======>
 bindsym $mod+Shift+Return exec firefox
-bindsym $mod+Return exec terminator
+bindsym $mod+Return exec gnome-terminal
 bindsym $mod+d exec rofi -show drun -opacity "80"
 
 
@@ -207,9 +210,9 @@ bindsym $mod+Shift+0 move container to $workspace0
 
 
 ########################## Autostart ##############################
-exec --no-startup-id /usr/bin/feh --bg-scale /home/tobiaslans/Pictures/mountains.jpg
+#exec --no-startup-id /usr/bin/feh --bg-scale /home/tobiaslans/Pictures/mountains.jpg
 exec --no-strtup-id notify-send "Welcome back Tobias!"
 exec_always --no-startup-id ~/.config/polybar/launch.sh &
-exec_always python3 ~/.config/i3/i3-autoname-workspaces.py &
+    exec_always python3 ~/.config/i3/i3-autoname-workspaces.py &
 exec_always compton --config ~/.config/i3/compton.conf
 
