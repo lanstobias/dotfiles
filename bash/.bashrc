@@ -152,5 +152,6 @@ path() {
 # =================== Sources ====================== #
 #source /usr/share/fzf/shell/key-bindings.bash
 source ~/catkin_ws/devel/setup.bash
+export VTE_VERSION="100"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash

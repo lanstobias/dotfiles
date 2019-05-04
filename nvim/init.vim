@@ -186,8 +186,9 @@ nnoremap <leader>gt :SignifyToggle<CR>
 
 "======================= Visual =========================="
 syntax on                                                 " Enable syntax
+"set t_Co=256
 set background=dark                                       " Set dark background
-set termguicolors                                         " Opaque Background
+"set termguicolors                                         " Opaque Background
 colorscheme gruvbox                                       " Set colorscheme
 set number                                                " Enable line numbers
 set cursorline                                            " Highlight current line
@@ -218,3 +219,4 @@ endfunction
 
 nnoremap <silent> <leader>to :call BgToggle()<cr>
 
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
