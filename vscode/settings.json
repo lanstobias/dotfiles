@@ -1,0 +1,49 @@
+{
+    "editor.fontSize": 14,
+    "todo-tree.defaultHighlight": {
+        "foreground": "green",
+        "type": "none"
+    },
+    "todo-tree.customHighlight": {
+        "TODO": {},
+        "FIXME": {}
+    },
+    "sync.gist": "e26eedb43e1d75e309c4628e77bc2f34",
+    "sync.quietSync": false,
+    "sync.removeExtensions": true,
+    "sync.syncExtensions": true,
+    "sync.autoDownload": false,
+    "sync.autoUpload": false,
+    "sync.forceDownload": false,
+    "workbench.colorTheme": "Gruvbox Dark Hard",
+    "editor.fontFamily": "Iosevka",
+    "editor.minimap.enabled": false,
+    "editor.minimap.maxColumn": 99,
+    "files.insertFinalNewline": true,
+    "workbench.fontAliasing": "antialiased",
+    "workbench.tips.enabled": false,
+    "breadcrumbs.symbolPath": "off",
+    "workbench.iconTheme": "vscode-icons",
+    "editor.lineNumbers": "relative",
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+              "scope": "comment",
+              "settings": {
+                "fontStyle": "normal"
+              }
+            }
+        ]
+    },
+    "workbench.statusBar.feedback.visible": false,
+    "workbench.activityBar.visible": true,
+    "theme-by-language.themes": {
+        "*": "Cyberpunk",
+        "markdown": "Material Theme High Contrast"
+    },
+    "window.zoomLevel": 0,
+    "editor.fontWeight": "500",
+    "editor.cursorBlinking": "solid",
+    "editor.hideCursorInOverviewRuler": true,
+    "workbench.editor.showTabs": false
+}
