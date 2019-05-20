@@ -26,6 +26,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'kshenoy/vim-signature'
 Plug 'mhinz/vim-signify'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'jiangmiao/auto-pairs'
 
 " --> fzf
 Plug 'junegunn/fzf.vim'
@@ -36,11 +37,17 @@ Plug 'w0rp/ale'
 
 call plug#end()
 
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
+let $VTE_VERSION="100"
 
 "======================= General ========================="
 let mapleader = ','                                       " Map leader to ,
 set mouse=n                                               " Enable mouse
 set encoding=UTF-8                                        " Set UTF-8 as standard
+
+"==> Update buffer from file
+set autoread 
+au FocusGained * :checktime
 
 
 "======================= Editor =========================="
@@ -57,7 +64,7 @@ set splitbelow                                            " Horizontal split bel
 set splitright                                            " Vertical split to right of current
 set scrolloff=5                                           " Keep 5 lines above and below while scrolling
 set nowrap                                                " Don't wrap the text
-set textwidth=99                                          " Set width of text to 99
+set textwidth=79                                          " Set width of text to 79
 set foldmethod=syntax                                     " Folds pecified to syntax definitions
 set foldlevel=99                                          " Open files unfolded
 set lbr
@@ -97,6 +104,10 @@ map <C-l> <C-W>l
 " Cycle tabs with Shift
 nnoremap H gT
 nnoremap L gt
+
+" Cycle buffers with Tab and Alt-Tab
+nnoremap  <silent>   <tab>  :if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bnext<CR>
+nnoremap  <silent> <s-tab>  :if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bprevious<CR><Paste>
 
 
 "=================== Plugin Settings ====================="
@@ -195,11 +206,11 @@ set cursorline                                            " Highlight current li
 set smartcase                                             " Be smart about cases when searching
 set ffs=unix,dos,mac                                      " Set Unix as standart file type
 hi clear SignColumn                                       " Clear color for the gutter
-set colorcolumn=+1                                        " Color column 100
+set colorcolumn=+1                                        " Color column 80
 set linespace=3
-hi ColorColumn guibg=#282828
+"hi ColorColumn guibg=#282828
 hi CursorLine term=bold cterm=bold guibg=#282828
-hi Folded guibg=#282828
+hi Folded guibg=#282828 ctermbg=NONE
 hi CursorLineNr guibg=#282828
 
 
