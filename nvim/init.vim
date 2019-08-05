@@ -1,19 +1,18 @@
 "====================== Plugins =========================="
 call plug#begin()
-
 "===> Visual
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
 Plug 'morhetz/gruvbox'
 Plug 'ryanoasis/vim-devicons'
 Plug 'Yggdroot/indentLine'
-Plug 'myusuf3/numbers.vim'
 Plug 'octol/vim-cpp-enhanced-highlight'
-Plug 'sjl/badwolf'
+Plug 'sheerun/vim-wombat-scheme'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-
+Plug 'sjl/badwolf'
+Plug '844196/lightline-badwolf.vim'
 
 "===> Functionality
+Plug 'Valloric/YouCompleteMe'
 Plug 'tpope/vim-fugitive'
 Plug 'ervandew/supertab'
 Plug 'tpope/vim-sensible'
@@ -21,11 +20,13 @@ Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'majutsushi/tagbar'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'easymotion/vim-easymotion'
-Plug 'kshenoy/vim-signature'
-Plug 'mhinz/vim-signify'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'reedes/vim-pencil'
+Plug 'stevearc/vim-arduino'
+Plug 'jiangmiao/auto-pairs'
+Plug 'haya14busa/incsearch.vim'
+Plug 'haya14busa/incsearch-fuzzy.vim'
 
 " --> fzf
 Plug 'junegunn/fzf.vim'
@@ -38,39 +39,29 @@ call plug#end()
 
 
 "======================= General ========================="
+au BufRead,BufNewFile *.md setlocal textwidth=80          " Wrap lines in .md textfile
+set foldmethod=syntax                                     " Folds pecified to syntax definitions
 let mapleader = ','                                       " Map leader to ,
-set mouse=n                                               " Enable mouse
 set encoding=UTF-8                                        " Set UTF-8 as standard
-
-
-"======================= Editor =========================="
-set autoindent                                            " Indent at the same level of the previous lines
-set shiftwidth=4                                          " Use indents of 4 spaces
-set expandtab                                             " Tabs are spaces, not tabs
-set tabstop=4                                             " An indentation every four columns
 set softtabstop=4                                         " Let backspace delete indent
-set showmatch                                             " Show matching braces
-set ai                                                    " Auto indent
-set si                                                    " Smart indent
+set textwidth=80                                          " Set width of text to 80
+set shiftwidth=4                                          " Use indents of 4 spaces
 set nojoinspaces                                          " Prevents inserting two spaces after punctuation on a join
+set scrolloff=5                                           " Keep 5 lines above and below while scrolling
 set splitbelow                                            " Horizontal split below current
 set splitright                                            " Vertical split to right of current
-set scrolloff=5                                           " Keep 5 lines above and below while scrolling
+set autoindent                                            " Indent at the same level of the previous lines
+set expandtab                                             " Tabs are spaces, not tabs
+set tabstop=4                                             " An indentation every four columns
+set showmatch                                             " Show matching braces
+set mouse=n                                               " Enable mouse
 set nowrap                                                " Don't wrap the text
-set textwidth=99                                          " Set width of text to 99
-set foldmethod=syntax                                     " Folds pecified to syntax definitions
-set foldlevel=99                                          " Open files unfolded
-set lbr
+set lbr                                                   " Cut lines between words when wrap is enabeled
+set ai                                                    " Auto indent
+set si                                                    " Smart indent
 
 
 "======================= Mapping ========================="
-" Remove search highlight with return
-map <Leader>bd :bd
-map <leader>lg <leader><space>
-
-" Remove highlight when fuzzy search
-nnoremap <Enter> :noh<cr><esc>
-
 " Autoindent opening and closing brackets
 imap <C-Return> <CR><CR><C-o>k<Tab>
 
@@ -108,10 +99,11 @@ let g:gruvbox_contrast_dark = "hard"
 "===> badwolf
 let g:badwolf_darkgutter = 0
 
-"===> deoplete
-let g:deoplete#enable_at_startup = 1
-let g:auto_complete_delay = 0
-let g:completor_min_chars = 1
+"===> YCM
+let g:ycm_global_ycm_extra_conf = '~/.config/nvim/.ycm_extra_conf.py'
+set completeopt-=preview
+"let g:ycm_autoclose_preview_window_after_insertion = 1
+"let g:ycm_autoclose_preview_window_after_completion = 1
 
 "===> TagBar
 let g:tagbar_width = 30
@@ -135,8 +127,8 @@ let g:fzf_layout = { 'down': '~40%' }
 let g:ale_sign_column_always = 1
 hi clear ALEErrorSign
 hi clear ALEWarningSign
-hi link ALEErrorSign GruvboxRed
-hi link ALEWarningSign GruvboxYellow
+"hi link ALEErrorSign GruvboxRed
+"hi link ALEWarningSign GruvboxYellow
 let g:ale_sign_error = '●'
 let g:ale_sign_warning = '●'
 let g:ale_echo_msg_error_str = '✖ Error'
@@ -154,67 +146,89 @@ nnoremap <leader>er :let ale_open_list<CR>
 "===> NERDTree
 map <C-b> :NERDTreeToggle<cr>
 
-"===> vim-airline
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#fnamemod = ':t'
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#tabline#right_sep = ' '
-let g:airline#extensions#tabline#right_alt_sep = '|'
-let g:airline#extensions#ale#enabled = 1
-let g:airline_left_sep = ' '
-let g:airline_left_alt_sep = '|'
-let g:airline_right_sep = ' '
-let g:airline_right_alt_sep = '|'
-let g:airline_theme= 'gruvbox'
+"===> lightline
+let g:lightline = {
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head'
+      \ },
+      \ }
+let g:lightline.colorscheme = 'badwolf'
 
 "===> vim-easymotion
 " <Leader>f{char} to move to {char}
 map  <Leader>f <Plug>(easymotion-bd-f)
 nmap <Leader>f <Plug>(easymotion-overwin-f)
 
+" s{char}{char} to move to {char}{char}
+nmap s <Plug>(easymotion-overwin-f2)
+
 " Move to line
 map <Leader>L <Plug>(easymotion-bd-jk)
 nmap <Leader>L <Plug>(easymotion-overwin-line)
 
-"===> vim-signify
-let g:signify_vcs_list = ['git']
-let g:signify_realtime = 1
-let g:signify_sign_show_count = 0
-nnoremap <leader>gt :SignifyToggle<CR>
+" Move to word
+map  <Leader>w <Plug>(easymotion-bd-w)
+nmap <Leader>w <Plug>(easymotion-overwin-w)
+
+"===> Pencil
+let g:pencil#textwidth = 80
+augroup pencil
+  autocmd!
+  autocmd FileType text         call pencil#init()
+  autocmd FileType markdown,mkd call pencil#init()
+augroup END
+
+"===> vim-arduino
+nnoremap <buffer> <leader>av :ArduinoVerify<CR>
+nnoremap <buffer> <leader>au :ArduinoUpload<CR>
+nnoremap <buffer> <leader>aus :ArduinoUploadAndSerial<CR>
+nnoremap <buffer> <leader>acb :ArduinoChooseBoard<CR>
+nnoremap <buffer> <leader>ap :ArduinoChooseProgrammer<CR>
+
+"===> incsearch
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+let g:incsearch#auto_nohlsearch = 1
+map n  <Plug>(incsearch-nohl-n)
+map N  <Plug>(incsearch-nohl-N)
+map *  <Plug>(incsearch-nohl-*)
+map #  <Plug>(incsearch-nohl-#)
+map g* <Plug>(incsearch-nohl-g*)
+map g# <Plug>(incsearch-nohl-g#)
+
+"====> incsearch-easymotion
+map z/ <Plug>(incsearch-fuzzy-/)
+map z? <Plug>(incsearch-fuzzy-?)
+map zg/ <Plug>(incsearch-fuzzy-stay)
+
+"===> vim-fugitive
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gd :Gvdiff<CR>
+nnoremap <leader>ga :Git add %:p<CR><CR>
 
 
 "======================= Visual =========================="
 syntax on                                                 " Enable syntax
 set background=dark                                       " Set dark background
 set termguicolors                                         " Opaque Background
-colorscheme gruvbox                                       " Set colorscheme
+colorscheme badwolf                                       " Set colorscheme
 set number                                                " Enable line numbers
 set cursorline                                            " Highlight current line
 set smartcase                                             " Be smart about cases when searching
 set ffs=unix,dos,mac                                      " Set Unix as standart file type
-hi clear SignColumn                                       " Clear color for the gutter
+hi clear SignColumn                                      " Clear color for the gutter
 set colorcolumn=+1                                        " Color column 100
-set linespace=3
-hi ColorColumn guibg=#282828
-hi CursorLine term=bold cterm=bold guibg=#282828
-hi Folded guibg=#282828
-hi CursorLineNr guibg=#282828
+set linespace=3                                           " Space between lines
+set noshowmode                                            " Hide active mode in status bar
+set hlsearch
 
-
-"====================== Functions ======================="
-" Toggle dark/light gruvbox colorscheme
-function! BgToggle()
-    if (&background == "dark")
-        let g:gruvbox_sign_column = "bg0"
-        let g:gruvbox_contrast_light = "medium"
-        set background=light
-    elseif (&background == "light")
-        let g:gruvbox_sign_column = "bg0"
-        let g:gruvbox_contrast_dark = "hard"
-        set background=dark
-    endif
-endfunction
-
-nnoremap <silent> <leader>to :call BgToggle()<cr>
-
+"===> Color settings (Old gruvbox settings)
+"hi ColorColumn guibg=#282828
+"hi CursorLine term=bold cterm=bold guibg=#282828
+"hi Folded guibg=#282828
+"hi CursorLineNr guibg=#282828

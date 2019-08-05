@@ -2,15 +2,30 @@ ZSH=$HOME/.oh-my-zsh           # Path to your oh-my-zsh configuration.
 ZSH_THEME="robbyrussell"       # Theme
 COMPLETION_WAITING_DOTS="true" # Display red dots while waiting
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
+# Source files
+filesToSource=(
+    '/Users/tobiaslans/dotfiles/scripts/aliases.sh'
+)
+
+for file in $filesToSource; do
+    if [ -e $file ]; then
+        source $file
+    else
+        echo "404: $file not found." 
+    fi
+done
+
+# Plugins can be found in ~/.oh-my-zsh/plugins/
 plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin:/usr/local/git/bin:/opt/local/bin:/usr/local/mongodb/bin
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin:/usr/local/git/bin:/opt/local/bin
+export PATH="/usr/local/opt/icu4c/bin:$PATH"
+export PATH="/usr/local/opt/icu4c/sbin:$PATH"
 
-# Customize to your needs...
+export EDITOR="nvim"
+
+# Colors
 ZSH_THEME_GIT_PROMPT_PREFIX="on %{$fg[magenta]%}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}!"
@@ -39,7 +54,7 @@ alias gcl='git clone'
 alias gta='git tag -a -m'
 alias gf='git reflog'
 alias gv='git log --pretty=format:'%s' | cut -d " " -f 1 | sort | uniq -c | sort -nr'
-alias gitignore='cp ~/.gitignore .'
+alias gitign='cp ~/.gitignore .'
 
 # ===> Directory information
 alias lh='ls -d .*' # show hidden files/directories only
@@ -71,8 +86,11 @@ alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en1"
 
 # ===> Remote machines
-alias scotchbox='cd ~/scotchbox; vagrant up'
 alias pi='ssh -p 2022 pi@tomat.trickip.net'
+
+# ===> Editors
+alias vim='nvim'
+alias vimdiff='nvim -d'
 
 # ================== Bind Keys ====================
 bindkey "^K"      kill-whole-line                      # ctrl-k
@@ -116,5 +134,3 @@ path() {
            sub(\"/local\", \"$fg_no_bold[yellow]/local$reset_color\"); \
            print }"
 }
-export PATH="/usr/local/opt/icu4c/bin:$PATH"
-export PATH="/usr/local/opt/icu4c/sbin:$PATH"
