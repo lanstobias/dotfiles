@@ -12,31 +12,26 @@ Plug 'sjl/badwolf'
 Plug '844196/lightline-badwolf.vim'
 
 "===> Functionality
-Plug 'Valloric/YouCompleteMe'
 Plug 'tpope/vim-fugitive'
-Plug 'ervandew/supertab'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
+Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'majutsushi/tagbar'
 Plug 'easymotion/vim-easymotion'
-Plug 'terryma/vim-multiple-cursors'
 Plug 'reedes/vim-pencil'
 Plug 'stevearc/vim-arduino'
-Plug 'jiangmiao/auto-pairs'
 Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
-
-" --> fzf
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'}
 Plug 'junegunn/fzf.vim'
 Plug '/usr/local/opt/fzf'
-
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'w0rp/ale'
-
 call plug#end()
 
+let $VTE_VERSION="100"
 
 "======================= General ========================="
 au BufRead,BufNewFile *.md setlocal textwidth=80          " Wrap lines in .md textfile
@@ -45,13 +40,25 @@ let mapleader = ','                                       " Map leader to ,
 set encoding=UTF-8                                        " Set UTF-8 as standard
 set softtabstop=4                                         " Let backspace delete indent
 set textwidth=80                                          " Set width of text to 80
+set pastetoggle=<F2>                                      " Toggle paste with F2
+
+"==> Update buffer from file
+set autoread 
+au FocusGained * :checktime
+
+
+"======================= Editor =========================="
+set foldmethod=syntax                                     " Folds pecified to syntax definitions
+set ffs=unix,dos,mac                                      " Set Unix as standart file type
 set shiftwidth=4                                          " Use indents of 4 spaces
 set nojoinspaces                                          " Prevents inserting two spaces after punctuation on a join
+set textwidth=99                                          " Set width of text to 99
 set scrolloff=5                                           " Keep 5 lines above and below while scrolling
 set splitbelow                                            " Horizontal split below current
 set splitright                                            " Vertical split to right of current
 set autoindent                                            " Indent at the same level of the previous lines
 set expandtab                                             " Tabs are spaces, not tabs
+set smartcase                                             " Be smart about cases when searching
 set tabstop=4                                             " An indentation every four columns
 set showmatch                                             " Show matching braces
 set mouse=n                                               " Enable mouse
@@ -62,6 +69,9 @@ set si                                                    " Smart indent
 
 
 "======================= Mapping ========================="
+" Remove highlight when fuzzy search
+nnoremap <Enter> :noh<cr><esc>
+
 " Autoindent opening and closing brackets
 imap <C-Return> <CR><CR><C-o>k<Tab>
 
@@ -75,7 +85,7 @@ nnoremap <Space> zA
 nnoremap <leader>vs <C-w>v
 nnoremap <leader>hs <C-w>s
 
-" Create tabs
+" Create jtabs
 nnoremap <leader>tn :tabnew<CR>
 nnoremap <leader>te :Te<CR>
 
@@ -88,6 +98,10 @@ map <C-l> <C-W>l
 " Cycle tabs with Shift
 nnoremap H gT
 nnoremap L gt
+
+" Cycle buffers with Tab and Alt-Tab
+nnoremap  <silent>   <tab>  :if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bnext<CR>
+nnoremap  <silent> <s-tab>  :if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bprevious<CR><Paste>
 
 
 "=================== Plugin Settings ====================="
@@ -111,52 +125,26 @@ let g:tagbar_iconchars = ['↠', '↡']
 nmap <F8> :TagbarToggle<CR>
 
 "===> fzf-vim
-nnoremap <C-p> :GFiles<Cr>
-nnoremap <C-+> :Files<Cr>
+nnoremap <C-p> :GFiles<Cr> nnoremap <C-o> :Buffers<CR>
+nnoremap <C-i> :History<CR>
 
 " This is the default extra key bindings
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
+  \ 'ctrl-h': 'split',
   \ 'ctrl-v': 'vsplit' }
 
 " Default fzf layout
 let g:fzf_layout = { 'down': '~40%' }
 
-"===> Ale
-let g:ale_sign_column_always = 1
-hi clear ALEErrorSign
-hi clear ALEWarningSign
-"hi link ALEErrorSign GruvboxRed
-"hi link ALEWarningSign GruvboxYellow
-let g:ale_sign_error = '●'
-let g:ale_sign_warning = '●'
-let g:ale_echo_msg_error_str = '✖ Error'
-let g:ale_echo_msg_format = '[#%linter%#] %s [%severity%]'
-let g:ale_echo_msg_warning_str = '⚠ Warning'
-let g:ale_statusline_format = ['%d error(s)', '%d warning(s)', 'OK']
-let g:ale_warn_about_trailing_whitespace = 1
-let g:ale_open_list = 0
-let g:ale_set_highlights = 1
-let g:ale_linters = {
-\   'c': ['cppcheck'],
-\}
-nnoremap <leader>er :let ale_open_list<CR>
+"===> coc
+source ~/dotfiles/nvim/coc_settings.vim
 
 "===> NERDTree
 map <C-b> :NERDTreeToggle<cr>
 
 "===> lightline
-let g:lightline = {
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'fugitive#head'
-      \ },
-      \ }
-let g:lightline.colorscheme = 'badwolf'
+source ~/dotfiles/nvim/lightline.vim
 
 "===> vim-easymotion
 " <Leader>f{char} to move to {char}
@@ -213,22 +201,18 @@ nnoremap <leader>ga :Git add %:p<CR><CR>
 
 
 "======================= Visual =========================="
+set t_Co=256                                              " Use 256 colors in terminal
 syntax on                                                 " Enable syntax
 set background=dark                                       " Set dark background
 set termguicolors                                         " Opaque Background
 colorscheme badwolf                                       " Set colorscheme
 set number                                                " Enable line numbers
 set cursorline                                            " Highlight current line
-set smartcase                                             " Be smart about cases when searching
-set ffs=unix,dos,mac                                      " Set Unix as standart file type
-hi clear SignColumn                                      " Clear color for the gutter
 set colorcolumn=+1                                        " Color column 100
 set linespace=3                                           " Space between lines
 set noshowmode                                            " Hide active mode in status bar
-set hlsearch
+set colorcolumn=+1                                        " Color column 80
+set cmdheight=1                                           " Set space below statusline to 1
+hi clear SignColumn                                       " Clear color for the gutter
 
-"===> Color settings (Old gruvbox settings)
-"hi ColorColumn guibg=#282828
-"hi CursorLine term=bold cterm=bold guibg=#282828
-"hi Folded guibg=#282828
-"hi CursorLineNr guibg=#282828
+"======================= Functions =========================="

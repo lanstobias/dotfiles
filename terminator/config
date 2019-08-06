@@ -1,5 +1,4 @@
 [global_config]
-  dbus = False
   enabled_plugins = TerminatorThemes, LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
   inactive_color_offset = 1.0
   tab_position = bottom
@@ -25,8 +24,9 @@
 [profiles]
   [[default]]
     background_color = "#282828"
+    background_image = None
     cursor_color = "#bbbbbb"
-    font = FuraCode Nerd Font Mono weight=450 10
+    font = DejaVu Sans Mono 11
     foreground_color = "#ebdbb2"
     palette = "#282828:#cc241d:#98971a:#d79921:#458588:#b16286:#689d6a:#a89984:#928374:#fb4934:#b8bb26:#fabd2f:#83a598:#d3869b:#8ec07c:#ebdbb2"
     scrollback_infinite = True
@@ -34,34 +34,40 @@
     show_titlebar = False
     use_system_font = False
   [[Aci]]
-    cursor_color = "#aaaaaa"
+    background_image = None
   [[Ayu mirage]]
     background_color = "#212733"
+    background_image = None
     cursor_color = "#FFD580"
     foreground_color = "#d9d7ce"
     palette = "#212733:#ff3333:#bae67e:#ffd580:#5ccfe6:#d4bfff:#5ccfe6:#3d4752:#3e4b59:#ff3333:#bae67e:#ffd580:#5ccfe6:#d4bfff:#5ccfe6:#eeeeec"
   [[Chalk]]
     background_color = "#2b2d2e"
+    background_image = None
     cursor_color = "#708284"
     foreground_color = "#d2d8d9"
     palette = "#7d8b8f:#b23a52:#789b6a:#b9ac4a:#2a7fac:#bd4f5a:#44a799:#d2d8d9:#888888:#f24840:#80c470:#ffeb62:#4196ff:#fc5275:#53cdbd:#d2d8d9"
   [[Chesterish]]
     background_color = "#293340"
+    background_image = None
     cursor_color = "#2c85f7"
     foreground_color = "#cdd2e9"
     palette = "#293340:#e17e85:#61ba86:#ffec8e:#4cb2ff:#be86e3:#2dced0:#cdd2e9:#546386:#e17e85:#61ba86:#ffec8e:#4cb2ff:#be86e3:#2dced0:#cdd2e9"
   [[Fideloper]]
     background_color = "#292f33"
+    background_image = None
     cursor_color = "#d4605a"
     foreground_color = "#dbdae0"
     palette = "#292f33:#cb1e2d:#edb8ac:#b7ab9b:#2e78c2:#c0236f:#309186:#eae3ce:#092028:#d4605a:#d4605a:#a86671:#7c85c4:#5c5db2:#819090:#fcf4df"
   [[Firewatch]]
     background_color = "#0e1011"
+    background_image = None
     cursor_color = "#708284"
     foreground_color = "#7c8fa4"
     palette = "#002831:#e63853:#5eb83c:#a57706:#359ddf:#d75cff:#4b73a2:#dcdcdc:#001e27:#e1003f:#1d9000:#cd9409:#006fc0:#a200da:#005794:#e2e2e2"
   [[Grape]]
     background_color = "#1d2837"
+    background_image = None
     cursor_color = "#bbbbbb"
     font = InconsolataGo Nerd Font Bold 15
     foreground_color = "#ffffff"
@@ -71,6 +77,8 @@
     show_titlebar = False
     use_system_font = False
   [[New Profile]]
-    cursor_color = "#aaaaaa"
+    background_image = None
+  [[New Profile 2]]
+    background_image = None
   [[Whatever]]
-    cursor_color = "#aaaaaa"
+    background_image = None
