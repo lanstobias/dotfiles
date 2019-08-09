@@ -1,5 +1,6 @@
 ZSH=$HOME/.oh-my-zsh
-ZSH_THEME="refined"
+#ZSH_THEME="refined"
+ZSH_THEME=powerlevel10k/powerlevel10k
 COMPLETION_WAITING_DOTS="true"
 plugins=(
     git
@@ -13,6 +14,8 @@ export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin:/usr/local
 export PATH="/usr/local/opt/icu4c/bin:$PATH"
 export PATH="/usr/local/opt/icu4c/sbin:$PATH"
 export EDITOR="nvim"
+export PATH="/usr/local/sbin:$PATH"
+
 
 # Source files
 filesToSource=(
@@ -118,6 +121,8 @@ path() {
            sub(\"/local\", \"$fg_no_bold[yellow]/local$reset_color\"); \
            print }"
 }
-export PATH="/usr/local/sbin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
