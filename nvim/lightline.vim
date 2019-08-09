@@ -1,5 +1,5 @@
 let g:lightline = {
-            \ 'colorscheme': 'badwolf',
+            \ 'colorscheme': 'gruvbox',
             \ 'active': {
             \   'left': [  ['mode', 'paste'], [ 'fugitive'], [ 'filename'],
             \              ['cocerror'], ['cocwarn'] ],
@@ -157,7 +157,7 @@ endfunction
 function! LightLineFileformat()
     return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
 endfunction
-let g:lightline.tabline          = {'left': [['buffers']], 'right': [['close']]}
+"let g:lightline.tabline          = {'left': [['buffers']], 'right': [['close']]}
 let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
 let g:lightline.component_type   = {'buffers': 'tabsel'}
 let g:lightline#bufferline#show_number  = 2

@@ -80,3 +80,4 @@ tags
 vim/.vim/bundle/*
 nvim/plugged/*
 vscode/*
+nvim/session/

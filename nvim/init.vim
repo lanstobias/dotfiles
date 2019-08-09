@@ -5,11 +5,8 @@ Plug 'itchyny/lightline.vim'
 Plug 'morhetz/gruvbox'
 Plug 'ryanoasis/vim-devicons'
 Plug 'Yggdroot/indentLine'
-Plug 'octol/vim-cpp-enhanced-highlight'
-Plug 'sheerun/vim-wombat-scheme'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'sjl/badwolf'
-Plug '844196/lightline-badwolf.vim'
+Plug 'shinchu/lightline-gruvbox.vim'
 
 "===> Functionality
 Plug 'tpope/vim-fugitive'
@@ -21,7 +18,6 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'majutsushi/tagbar'
 Plug 'easymotion/vim-easymotion'
 Plug 'reedes/vim-pencil'
-Plug 'stevearc/vim-arduino'
 Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -29,18 +25,26 @@ Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh
 Plug 'junegunn/fzf.vim'
 Plug '/usr/local/opt/fzf'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'mhinz/vim-startify'
+Plug 'xolox/vim-notes'
+Plug 'xolox/vim-misc'
+Plug 'junegunn/goyo.vim'
+Plug 'pseewald/vim-anyfold'
+Plug 'sheerun/vim-polyglot'
 call plug#end()
 
 let $VTE_VERSION="100"
 
+
 "======================= General ========================="
 au BufRead,BufNewFile *.md setlocal textwidth=80          " Wrap lines in .md textfile
 set foldmethod=syntax                                     " Folds pecified to syntax definitions
+set pastetoggle=<F3>                                      " Toggle paste with F2
 let mapleader = ','                                       " Map leader to ,
 set encoding=UTF-8                                        " Set UTF-8 as standard
 set softtabstop=4                                         " Let backspace delete indent
 set textwidth=80                                          " Set width of text to 80
-set pastetoggle=<F2>                                      " Toggle paste with F2
+
 
 "==> Update buffer from file
 set autoread 
@@ -48,7 +52,7 @@ au FocusGained * :checktime
 
 
 "======================= Editor =========================="
-set foldmethod=syntax                                     " Folds pecified to syntax definitions
+set foldmethod=marker                                     " Folds pecified to syntax definitions
 set ffs=unix,dos,mac                                      " Set Unix as standart file type
 set shiftwidth=4                                          " Use indents of 4 spaces
 set nojoinspaces                                          " Prevents inserting two spaces after punctuation on a join
@@ -72,14 +76,13 @@ set si                                                    " Smart indent
 " Remove highlight when fuzzy search
 nnoremap <Enter> :noh<cr><esc>
 
+nnoremap <leader>to :call BgToggle()<CR>
+
 " Autoindent opening and closing brackets
 imap <C-Return> <CR><CR><C-o>k<Tab>
 
 " Direcories
 nmap <leader>ev :e ~/dotfiles/nvim/init.vim<CR>
-
-" Folding
-nnoremap <Space> zA
 
 " Vertical/Horizontal split
 nnoremap <leader>vs <C-w>v
@@ -99,9 +102,8 @@ map <C-l> <C-W>l
 nnoremap H gT
 nnoremap L gt
 
-" Cycle buffers with Tab and Alt-Tab
-nnoremap  <silent>   <tab>  :if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bnext<CR>
-nnoremap  <silent> <s-tab>  :if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bprevious<CR><Paste>
+" Open startify
+map <leader>st :Startify<CR>
 
 
 "=================== Plugin Settings ====================="
@@ -109,15 +111,10 @@ nnoremap  <silent> <s-tab>  :if &modifiable && !&readonly && &modified <CR> :wri
 let g:gruvbox_bold = 1
 let g:gruvbox_sign_column = "bg0"
 let g:gruvbox_contrast_dark = "hard"
+let g:gruvbox_contrast_light = "soft"
 
 "===> badwolf
 let g:badwolf_darkgutter = 0
-
-"===> YCM
-let g:ycm_global_ycm_extra_conf = '~/.config/nvim/.ycm_extra_conf.py'
-set completeopt-=preview
-"let g:ycm_autoclose_preview_window_after_insertion = 1
-"let g:ycm_autoclose_preview_window_after_completion = 1
 
 "===> TagBar
 let g:tagbar_width = 30
@@ -125,8 +122,10 @@ let g:tagbar_iconchars = ['↠', '↡']
 nmap <F8> :TagbarToggle<CR>
 
 "===> fzf-vim
-nnoremap <C-p> :GFiles<Cr> nnoremap <C-o> :Buffers<CR>
-nnoremap <C-i> :History<CR>
+nnoremap <C-p> :GFiles<Cr>
+nnoremap <C-o> :Files<Cr>
+nnoremap <C-b> :Buffers<CR>
+nnoremap <C-m> :History<CR>
 
 " This is the default extra key bindings
 let g:fzf_action = {
@@ -141,7 +140,7 @@ let g:fzf_layout = { 'down': '~40%' }
 source ~/dotfiles/nvim/coc_settings.vim
 
 "===> NERDTree
-map <C-b> :NERDTreeToggle<cr>
+map <F2> :NERDTreeToggle<cr>
 
 "===> lightline
 source ~/dotfiles/nvim/lightline.vim
@@ -199,20 +198,74 @@ nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gd :Gvdiff<CR>
 nnoremap <leader>ga :Git add %:p<CR><CR>
 
+"===> vim-gitgutter
+let g:gitgutter_enabled = 1
+nnoremap <leader>tgg :GitGutterToggle<CR>
 
-"======================= Visual =========================="
-set t_Co=256                                              " Use 256 colors in terminal
-syntax on                                                 " Enable syntax
+"===> vim-startify
+source ~/dotfiles/nvim/startify.vim
+
+"===> vim-notes
+let g:notes_directories = ['~/dropbox/notes', '~/notes']
+let g:notes_suffix = '.md'
+
+"===> goyo
+nnoremap <leader>go :Goyo<CR>
+let g:goyo_width = 120
+let g:goyo_height = 90
+
+"===> vim-anyfold
+filetype plugin indent on
+autocmd Filetype * AnyFoldActivate
+set foldlevel=99
+let g:anyfold_fold_comments=1
+
+
+"======================= Visual ==========================
+hi Folded guibg=None
 set background=dark                                       " Set dark background
-set termguicolors                                         " Opaque Background
-colorscheme badwolf                                       " Set colorscheme
-set number                                                " Enable line numbers
-set cursorline                                            " Highlight current line
-set colorcolumn=+1                                        " Color column 100
-set linespace=3                                           " Space between lines
-set noshowmode                                            " Hide active mode in status bar
-set colorcolumn=+1                                        " Color column 80
-set cmdheight=1                                           " Set space below statusline to 1
 hi clear SignColumn                                       " Clear color for the gutter
+colorscheme gruvbox                                       " Colorscheme (valid comment)
+set colorcolumn=+1                                        " Color column 100
+set termguicolors                                         " Opaque Background
+set cmdheight=1                                           " Set space below statusline to 1
+set linespace=3                                           " Space between lines
+set cursorline                                            " Highlight current line
+set noshowmode                                            " Hide active mode in status bar
+set t_Co=256                                              " Use 256 colors in terminal
+set number                                                " Enable line numbers
+syntax on                                                 " Enable syntax
 
-"======================= Functions =========================="
+
+"===================== Functions =========================
+"===> Goyo
+function! s:goyo_enter()
+  if executable('tmux') && strlen($TMUX)
+    silent !tmux set status off
+    silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+  endif
+  set noshowcmd
+  set scrolloff=999
+endfunction
+
+function! s:goyo_leave()
+  if executable('tmux') && strlen($TMUX)
+    silent !tmux set status on
+    silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+  endif
+  set showcmd
+  set scrolloff=5
+endfunction
+
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
+
+"===> Guvbox
+" Toggle dark/light gruvbox colorscheme
+function! BgToggle()
+    if (&background == "dark")
+        set background=light
+    elseif (&background == "light")
+        set background=dark
+    endif
+endfunction
