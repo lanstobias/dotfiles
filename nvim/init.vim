@@ -105,6 +105,10 @@ nnoremap L gt
 " Open startify
 map <leader>st :Startify<CR>
 
+" Terminal
+tnoremap <Esc> <C-\><C-n>
+nnoremap <leader>tt :vsplit term://zsh<CR>
+
 
 "=================== Plugin Settings ====================="
 "===> gruvbox
