@@ -78,7 +78,6 @@ alias svu='spotify vol up'
 alias svd='spotify vol down'
 alias svs='spotify vol show'
 
-
 # ================== Bind Keys ====================
 bindkey "^K"      kill-whole-line                      # ctrl-k
 bindkey "^R"      history-incremental-search-backward  # ctrl-r
@@ -120,6 +119,27 @@ path() {
            sub(\"/sbin\",  \"$fg_no_bold[magenta]/sbin$reset_color\"); \
            sub(\"/local\", \"$fg_no_bold[yellow]/local$reset_color\"); \
            print }"
+}
+
+# ===> Journal
+journal() {
+    journalPath=~/journal
+    year=$(date +'%Y')
+    file=$journalPath/$year/$(date +%a_%Y_%m_%d.txt)
+
+    # Create year directory if it doesn't exists
+    if [ ! -d  $journalPath/$year ]; then
+        echo "First entry of the year! :)"
+        command mkdir $year
+    fi
+
+    # Check if todays journal exists
+    if [ ! -f $file ];
+        then
+            nvim +"r!date \"+\%H:\%M\"" +"normal G" +"startinsert" $file
+        else
+            nvim +"normal Go" +"r!date \"+\%H:\%M\"" +"normal Go" +"startinsert" $file
+    fi
 }
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
