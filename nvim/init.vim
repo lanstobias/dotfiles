@@ -31,6 +31,7 @@ Plug 'xolox/vim-misc'
 Plug 'junegunn/goyo.vim'
 Plug 'pseewald/vim-anyfold'
 Plug 'sheerun/vim-polyglot'
+Plug 'wakatime/vim-wakatime'
 call plug#end()
 
 let $VTE_VERSION="100"
@@ -44,7 +45,6 @@ let mapleader = ','                                       " Map leader to ,
 set encoding=UTF-8                                        " Set UTF-8 as standard
 set softtabstop=4                                         " Let backspace delete indent
 set textwidth=80                                          " Set width of text to 80
-
 
 "==> Update buffer from file
 set autoread 
@@ -98,6 +98,18 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
+" Copy to clipboard
+vnoremap  <leader>y  "+y
+nnoremap  <leader>Y  "+yg_
+nnoremap  <leader>y  "+y
+nnoremap  <leader>yy  "+yy
+
+" Paste from clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+vnoremap <leader>p "+p
+vnoremap <leader>P "+P
+
 " Cycle tabs with Shift
 nnoremap H gT
 nnoremap L gt
@@ -106,7 +118,10 @@ nnoremap L gt
 map <leader>st :Startify<CR>
 
 " Terminal
-tnoremap <Esc> <C-\><C-n>
+if has("nvim")
+  au TermOpen * tnoremap <buffer> <Esc> <c-\><c-n>
+  au FileType fzf tunmap <buffer> <Esc>
+endif
 nnoremap <leader>tt :vsplit term://zsh<CR>
 
 
@@ -129,7 +144,7 @@ nmap <F8> :TagbarToggle<CR>
 nnoremap <C-p> :GFiles<Cr>
 nnoremap <C-o> :Files<Cr>
 nnoremap <C-b> :Buffers<CR>
-nnoremap <C-m> :History<CR>
+nnoremap <C-0> :History<CR>
 
 " This is the default extra key bindings
 let g:fzf_action = {
@@ -169,7 +184,7 @@ nmap <Leader>w <Plug>(easymotion-overwin-w)
 let g:pencil#textwidth = 80
 augroup pencil
   autocmd!
-  autocmd FileType text         call pencil#init()
+  autocmd FileType text         call pencil#init({'wrap': 'hard', 'autoformat': 0})
   autocmd FileType markdown,mkd call pencil#init()
 augroup END
 
@@ -226,7 +241,6 @@ let g:anyfold_fold_comments=1
 
 
 "======================= Visual ==========================
-hi Folded guibg=None
 set background=dark                                       " Set dark background
 hi clear SignColumn                                       " Clear color for the gutter
 colorscheme gruvbox                                       " Colorscheme (valid comment)
@@ -239,6 +253,7 @@ set noshowmode                                            " Hide active mode in 
 set t_Co=256                                              " Use 256 colors in terminal
 set number                                                " Enable line numbers
 syntax on                                                 " Enable syntax
+hi Folded guibg=NONE ctermbg=NONE
 
 
 "===================== Functions =========================
