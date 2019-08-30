@@ -141,10 +141,10 @@ let g:tagbar_iconchars = ['↠', '↡']
 nmap <F8> :TagbarToggle<CR>
 
 "===> fzf-vim
-nnoremap <C-p> :GFiles<Cr>
+nnoremap <C-g> :GFiles<Cr>
+nnoremap <C-p> :History<CR>
 nnoremap <C-o> :Files<Cr>
 nnoremap <C-b> :Buffers<CR>
-nnoremap <C-0> :History<CR>
 
 " This is the default extra key bindings
 let g:fzf_action = {
