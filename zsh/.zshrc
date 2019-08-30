@@ -19,7 +19,7 @@ export PATH="/usr/local/sbin:$PATH"
 
 # Source files
 filesToSource=(
-    '/Users/tobiaslans/dotfiles/scripts/aliases.sh'
+    '~/dotfiles/scripts/aliases.sh'
 )
 
 for file in $filesToSource; do
@@ -61,7 +61,7 @@ alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en1"
 
 # ===> Remote machines
-alias pi='ssh -p 2022 pi@tomat.trickip.net'
+alias pi='ssh pi@raspberrypi'
 
 # ===> Editors
 alias vim='nvim'
