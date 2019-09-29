@@ -13,17 +13,12 @@ fi
 # Disable the bell
 if [[ $iatest > 0 ]]; then bind "set bell-style visible"; fi
 
-
 # ================ Exports ================== #
 # Don't put duplicate lines in the history and do not add lines that start with a space
 export HISTCONTROL=erasedups:ignoredups:ignorespace
 
 # Set the default editor
-export EDITOR=nvim
-
-# To have colors for ls and all grep commands such as grep, egrep and zgrep
-#export CLICOLOR=1
-#export LS_COLORS='no=00:fi=00:di=00;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:*.xml=00;31:'
+export EDITOR=vim
 
 # Color for manpages in less makes manpages a little easier to read
 export LESS_TERMCAP_mb=$'\E[01;31m'
@@ -102,29 +97,8 @@ alias venvoff="deactivate"
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en1"
 
-# ===> VIM
-alias vim="nvim"
-alias vimh="nvim ."
-
 # ===> Other
 alias less="view"
-
-# =================== Prompt ======================= #
-source $HOME/dotfiles/bash/git-prompt.sh
-export GIT_PS1_SHOWDIRTYSTATE=true
-
-txtylw='\033[1;33m'  # Yellow
-txtwht='\e[0;37m'    # White
-fgcolor="\033[0m"    # unsets color to term's fg color
-twolevelprompt='$([ "$PWD" != "${PWD%/*/*/*}" ] && echo "/...${PWD##${PWD%/*/*}}" || echo "$PWD")'
-gitprompt='$(__git_ps1 "(%s)")'
-arrow=$'\xe2\x86\x92'
-export PS1="$USER - \[$txtwht\]$twolevelprompt\[$fgcolor\]$gitprompt\[$txtylw\] $arrow \[$fgcolor\]"
-
-# This one isn't required for bash prompt and is a small bonus
-# which gives you git-specific auto-completion. Sometimes this can slow
-# things down. Feel free to disable it if you are experiencing latency.
-source $HOME/dotfiles/bash/git-completion.sh
 
 
 # ================== Functions ===================== #
@@ -150,8 +124,6 @@ path() {
 
 
 # =================== Sources ====================== #
-#source /usr/share/fzf/shell/key-bindings.bash
-source ~/catkin_ws/devel/setup.bash
 export VTE_VERSION="100"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
