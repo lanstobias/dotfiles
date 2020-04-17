@@ -1,201 +1,128 @@
-"====================== Sources ========================"
-source ~/.vim/plugins.vi
+"================================ Sources ====================================="
+ source ~/dotfiles/nvim/settings/plugins.vim
 
-"====================== General ========================"
-let mapleader = ","                                     " Map leader to ,
-set mouse=n                                             " Enable mouse
-set encoding=utf8                                       " Set default encoding to UTF-8 instead of latin1
-set history=50	                                        " Sets how many lines of history VIM remembers
-set autoread                                            " Set to auto read when a file is changed from the outside
-set smartcase                                           " When searching try to be smart about cases
-set hlsearch                                            " Highlight search results
-set lazyredraw                                          " Don't redraw while executing macros (good performance config)
-set directory^=$HOME/.vim/tmp//                         " Store backups in tmp directoru instead of ~
-set encoding=utf8                                       " Set utf8 as standard encoding and EN as the standard language
-set autowriteall                                        " Save the file when switch buffer
-set belloff=all                                         " No bells..
-set scrolloff=5                                         " Keep 5 lines above and below cursor when scrolling in file
-set ffs=unix,dos,mac                                    " Use Unix as the standard file type
-set hidden                                              " Makes vim work like every other multiple-file editor
-set autochdir                                           " Auto change directory to file
-set ff=unix
-set foldmethod=syntax                                   " Folds are defined by a user-defined expression
-set foldlevelstart=99                                   " Don't start new buffers folded
 
-"==> Configure backspace so it acts as it should act
+"=============================== General ======================================"
+let mapleader = ","                                                            " Map leader to ,
+set mouse=n                                                                    " Enable mouse
+set encoding=utf8                                                              " Set default encoding to UTF-8 instead of latin1
+set history=50                                                                 " Sets how many lines of history VIM remembers
+set autoread                                                                   " Set to auto read when a file is changed from the outside
+set directory^=$HOME/.vim/tmp//                                                " Store backups in tmp directoru instead of ~
+set belloff=all                                                                " No bells..
+set ffs=unix,dos,mac                                                           " Use Unix as the standard file type
+set splitright                                                                 " Always split window to the right
+set noswapfile                                                                 " Disable swapfiles
+set ttimeout                                                                   " ttimeout mode active, will wait ttimeoutlen for a key to follow
+set ttimeoutlen=100                                                            " Wait milliseonds for terminal to complete key code sequence
+set timeoutlen=3000                                                            " Wait milliseconds for mapped sequence to complete
+set nowrap                                                                     " Do not wrap text
+
+"===> Configure backspace so it acts as it should act
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
 
-"==> No arrow keys
-imap <up> <nop>
-imap <down> <nop>
-"imap <left> <nop>
-"imap <right> <nop>
 
-"===================== Colorscheme ====================="
-"==> True colors
+"=============================== Visual ======================================="
+"===> Set appropriate color mode
 if (has("termguicolors"))
-    set termguicolors
+   set termguicolors                                                           " Set 24-bit true color
+else
+   set t_Co=256                                                                " Set 256 colors
 endif
 
-syntax enable                                           " Eneble use of syntax highlighting
-set background=dark                                     " Default dark colorscheme
-colorscheme gruvbox                                     " Set colorscheme
+syntax enable                                                                  " Eneble use of syntax highlighting
+colorscheme gruvbox                                                            " Set colorscheme
+set background=dark                                                            " Default dark colorscheme
+set number                                                                     " Activates line numbers
+set mat=2                                                                      " How many tenths of a second to blink when matching brackets
+set ruler                                                                      " Always show current position
+set textwidth=80                                                               " 80 character text witdh
+set laststatus=2                                                               " Height of statusline
+set colorcolumn=80                                                             " Highlight column 80
+set cursorline                                                                 " Highlight the screen line of the cursor
+set noshowmode                                                                 " Hide last line under mode
 
-"=================== Editor Visuals ===================="
-set t_Co=256                                            " Use 256 colors
-set number                                              " Activates line numbers
-set cursorline                                          " Highlight current line
-set mat=2                                               " How many tenths of a second to blink when matching brackets
-set relativenumber                                      " Show relative line numbers
-set ruler                                               " Always show current position
-set textwidth=99                                        " 120 character text witdh (80 is
-set laststatus=2                                        " Height of statusline
-set nowrap                                              " Do not wrap text that expand beyond 120 chars
-set splitright                                          " Always split window to the right
-set incsearch                                           " Highlight fuzzy search
-set linespace=2
-
-"==> Error/GIT gutter always visible
+"===> Error/GIT gutter always visible
 augroup mine
     au BufWinEnter * sign define mysign
     au BufWinEnter * exe "sign place 1337 line=1 name=mysign buffer=" . bufnr('%')
 augroup END
 
-"==> Warn when lines go beyond 99 chars
-highlight ColorColumn ctermbg=red
-"call matchadd('ColorColumn', '\%100v', 100)             " Only the lines that go over
-"let &colorcolumn=join(range(100,999),",")               " Different color past 100 characters
+"===> Colors
+hi CursorLine ctermbg=NONE guibg=#282828
+hi CursorLineNr guifg=#fe8019
+hi ColorColumn ctermbg=236 guibg=#282828
+hi Folded ctermbg=236 guibg=#282828
+hi SignColumn ctermbg=237 guibg=#282828
 
-"==> Line highlight
-highlight CursorLine term=bold ctermbg=red
+"===> Diffcolors
+hi DiffDelete gui=none guifg=#fb4934 guibg=#590003
+hi DiffAdd gui=none guifg=none guibg=#2a4a0d
+hi DiffChange gui=none guifg=none guibg=#043740
+hi DiffText gui=none guifg=none guibg=#32523e
 
-"============ Text, tabs and indent related ============"
-set expandtab                                           " Use spaces instead of tabs
-set smarttab                                            " Be smart when using tabs
-set ai                                                  " Auto indent
-set si                                                  " Smart indent
+"===> netrw
+let g:netrw_banner = 0
+let g:netrw_altv=1
 
-" 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
 
-" Linebreak on 500 characters
-set lbr
-set tw=500
+"=============================== Editor ======================================="
+set tabstop=4                                                                  " Number of spaces that <Tab> counts for
+set shiftwidth=3                                                               " Indentation via >>
+set expandtab                                                                  " Use spaces
+let g:vim_json_syntax_conceal = 0                                              " Show all characters in json files
+au FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o      " Set formatting
 
-"=============== Files, backups and undo ==============="
-"" Turn backup off, since most stuff is in git anyway..
-set nobackup
-set nowb
-set noswapfile
 
-"================ Mappings ==================
-"===> Editor
-map <silent> <leader><cr> :noh<cr>
-map <Leader>bd :bd
-map <leader>lg <leader><space>
+"========================= Language Specific =================================="
+au! BufNewFile,BufReadPost *.md set filetype=markdown
+au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
-" Vertical/Horizontal split
-nnoremap <leader>vs <C-w>v
-nnoremap <leader>hs <C-w>s
 
-" Autoindent opening and closing brackets
-imap <C-Return> <CR><CR><C-o>k<Tab>
-
-" Edit another file in the same directory as the current file
-"      uses expression to extract path from current file's path
-map <Leader>e :e <C-R>=escape(expand("%:p:h"),' ') . '/'<CR>
-map <Leader>s :vsp <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
-map <Leader>v :vnew <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
+"============================== Mappings ======================================"
+"===> Splits
+nnoremap <Leader>hs :split<CR>
+nnoremap <Leader>vs :vsplit<CR>
 
 "===> Direcories
-nmap <leader>ev :e /home/tobiaslans/dotfiles/vim/.vimrc<CR>
-nmap <leader>ep :e /home/tobiaslans/dotfiles/vim/.vim/plugins.vim<CR>
-nmap <leader>epr :e /home/tobiaslans/dotfiles/vim/.vim/projects.vim<CR>
-map <Leader>dr :e /home/tobiaslans/Dropbox/
-map <Leader>oru :e /home/tobiaslans/Dropbox/oru/
+nmap <leader>ev :e ~/dotfiles/vim/.vimrc<CR>
+nmap <leader>ep :e ~/dotfiles/nvim/settings/plugins.vim<CR>
 
-"===> Buffers
-map <leader>db :bd<cr>
+"===> Movement
+let g:BASH_Ctrl_j = 'off'
+nnoremap <C-j> <C-W><C-J>
+nnoremap <C-k> <C-W><C-K>
+nnoremap <C-l> <C-W><C-L>
+nnoremap <C-h> <C-W><C-H>
 
-"===> Folding
-nnoremap <Space> zA
+"===> Other
+" Clear search highlight
+nnoremap <silent> <CR> :nohlsearch<CR><C-L>
 
-"===> Window management
-map <C-b> :NERDTreeToggle<cr>
-nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
-nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR>
+" Paste in the beginning of line
+nnoremap <leader>p 0i<space><esc>pa<space><esc>0x
 
-" Tabs
-nnoremap <Esc>^[[D :tabprevious<CR>
-nnoremap <Esc>^[[C :tabnext<CR>
-nnoremap <leader>te :te<CR>
+" Copy to clipboard
+noremap <Leader>y "+y
+noremap <Leader>p "+p
+noremap <Leader>Y "+y
+noremap <Leader>P "+p
 
-" Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
+" Open netrw
+nnoremap - :e dummynetrwbuf \| Explore \| bw! dummynetrwbuf <CR>
 
-"===> Visual
-" Remove highlight when fuzzy search
-nnoremap <Enter> :noh<cr><esc>
+"===> Ctags
+nnoremap <Leader>gd :only<bar>vsplit<CR>gd
 
-" Toggle background
-nnoremap <silent> <leader>to :call BgToggle()<cr>
+"===> F-keys
+map <F8> :set ignorecase! ignorecase?<CR>
+map <F2> <Plug>(coc-definition)
+map <F4> :call CurtineIncSw()<CR>
+nmap <F8> :TagbarToggle<CR>
 
-"====================== Functions ======================="
-" Read the current hour and return string with soft, medium
-" or hard contrast for e.g. gruvbox
-function! SetContrastBasedOnTime(color)
-    let hour = strftime("%H")
-    let l:contrast = "medium"
 
-    if (hour > 06 && hour < 20)
-        let l:contrast="medium"
-    else
-        let l:contrast="hard"
-    endif
+"=============================== Functions ===================================="
 
-    if (a:color == "light")
-        let g:gruvbox_contrast_light = l:contrast
-    else
-        let g:gruvbox_contrast_dark = l:contrast
-    endif
-endfunction
-
-" Set gruvbox background
-function! SetGruvboxBackground(color)
-    call SetContrastBasedOnTime(a:color)
-    if (a:color == "light")
-        set background=light
-    elseif (a:color == "dark")
-        set background=dark
-    endif
-endfunction
-
-" Toggle dark/light gruvbox colorscheme
-function! BgToggle()
-    if (&background == "dark")
-        call SetGruvboxBackground("light")
-    elseif (&background == "light")
-        call SetGruvboxBackground("dark")
-    endif
-endfunction
-
-" Create parent direcotries if they doesn't exist
-function s:MkNonExDir(file, buf)
-    if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
-        let dir=fnamemodify(a:file, ':h')
-	    if !isdirectory(dir)
-            call mkdir(dir, 'p')
-	    endif
-    endif
-endfunction
-
-"====================== Includes ======================="
-source ~/.vim/mappings.vi
-
-"====================== Executes ======================="
-call SetContrastBasedOnTime(&background)                
+filetype plugin indent on
