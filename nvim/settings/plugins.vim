@@ -10,35 +10,25 @@ endif
 call plug#begin()
 Plug 'tpope/vim-sensible'
 Plug 'vimwiki/vimwiki'
-Plug 'mattn/calendar-vim'
 Plug 'morhetz/gruvbox'
+Plug 'ryanoasis/vim-devicons'
 Plug 'preservim/nerdtree'
-Plug 'jceb/vim-orgmode'
-Plug 'junegunn/goyo.vim'
-Plug 'vim-scripts/todolist.vim'
+Plug 'vwxyutarooo/nerdtree-devicons-syntax'
 Plug 'easymotion/vim-easymotion'
 Plug 'haya14busa/incsearch.vim'
-Plug 'haya14busa/incsearch-fuzzy.vim'
 Plug 'Yggdroot/indentLine'
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --no-bash' }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-Plug 'pbogut/fzf-mru.vim'
 Plug 'octol/vim-cpp-enhanced-highlight'
-Plug 'christoomey/vim-tmux-navigator'
 Plug 'ericcurtin/CurtineIncSw.vim'
 Plug 'majutsushi/tagbar'
-Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 Plug 'sheerun/vim-polyglot'
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-Plug 'airblade/vim-rooter'
-Plug 'samoshkin/vim-mergetool'
-Plug 'sjl/badwolf'
+Plug 'embear/vim-localvimrc'
+Plug 'preservim/nerdcommenter'
+Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
 
 
@@ -60,10 +50,8 @@ let g:vimwiki_list = [
                     \]
 autocmd FileType vimwiki map <Leader>d :VimwikiMakeDiaryNote
 
-
-"===> NERDtree
-map <C-n> :NERDTreeToggle %<CR>
-let g:NERDTreeChDirMode = 2
+"===> NerdTree
+nmap <silent> <C-n> :NERDTreeFind<cr>
 
 
 "===> Goyo
@@ -88,10 +76,14 @@ map <Leader>L <Plug>(easymotion-bd-jk)
 map  <Leader>w <Plug>(easymotion-bd-w)
 
 
-"===> incsearch-fuzzy
-map / <Plug>(incsearch-fuzzy-/)
-map ? <Plug>(incsearch-fuzzy-?)
-map g/ <Plug>(incsearch-fuzzy-stay)
+"===> incsearch
+map / <Plug>(incsearch-forward)
+map ? <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+
+
+"===> vim--localvimrc
+let g:localvimrc_whitelist='/home/ubuntu/stash/lhd_shell/release_tm6_new/*'
 
 
 "===> orgmode
@@ -134,30 +126,27 @@ nnoremap gdl :diffget //3 <bar> diffupdate<CR>
 
 "===> fzf / fzf-mru
 if has("nvim")
-    " Escape inside a FZF terminal window should exit the terminal window
-    " rather than going into the terminal's normal mode.
-    autocmd FileType fzf tnoremap <buffer> <Esc> <Esc>
+  au TermOpen * tnoremap <buffer> <Esc> <c-\><c-n>
+  au FileType fzf tunmap <buffer> <Esc>
 endif
-if has("nvim") && 0
-   let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
-else
-   let g:fzf_layout = { 'down': '~20%' }
-endif
-nnoremap <silent> <C-p> :Files<cr>
-nnoremap <silent> <C-b> :Buffers<cr>
-nnoremap <silent> <C-g> :GFiles<cr>
-nnoremap <silent> <C-k> :Rg<cr>
-nnoremap <silent> <Leader>ag :Ag <C-R><C-W><CR>
-xnoremap <silent> <Leader>agy :Ag <C-R>"<CR>
-nnoremap <silent> <Leader>mrp :FZFMru<cr>
-nnoremap <silent> <Leader>mrp :FZFMru<cr>
+" Window
+"let g:fzf_preview_window = ''
+"if has('nvim-0.4.0') || has("patch-8.2.0191")
+    "let g:fzf_layout = { 'window': {
+                "\ 'width': 0.7,
+                "\ 'height': 0.4,
+                "\ 'highlight': 'Comment',
+                "\ 'rounded': v:true } }
+"else
+    "let g:fzf_layout = { "window": "silent botright 16split enew" }
+"endif
 
+" Functions
 function! s:find_git_root()
-  return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+  return system('(git rev-parse --show-superproject-working-tree --show-toplevel | head -1) 2> /dev/null')[:-2]
 endfunction
 
-command! ProjectFiles execute 'Files' s:find_git_root()
-command! Rgw call fzf#vim#tags(expand('<cword>'))
+nnoremap <silent><leader>f :FZF -q <C-R>=expand("<cword>")<CR><CR>
 
 function! RipgrepFzf(query, fullscreen)
   let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
@@ -167,53 +156,42 @@ function! RipgrepFzf(query, fullscreen)
   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
 endfunction
 
+command! -bang -nargs=* FindWordUnderCursor
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always '.shellescape(expand('<cword>')), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%', '?'),
+  \   <bang>0)
+
+" Commands
+command! ProjectFiles execute 'Files' s:find_git_root()
+command! Rgt call fzf#vim#tags(expand('<cword>'))
+
 " Match only file content
 command! -bang -nargs=* Rgc call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
+command! -nargs=1 -bang Locate call fzf#run(fzf#wrap({'source': 'locate .', 'options': '-m'}, <bang>0))
 
-command! -nargs=1 -bang Locate call fzf#run(fzf#wrap(
-      \ {'source': 'locate .', 'options': '-m'}, <bang>0))
+command! -bang -nargs=* RGW
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --hidden --ignore-case --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:60%')
+  \           : fzf#vim#with_preview({'options': '--delimiter : --nth 4.. -e'}, 'right:50%:hidden', '?'),
+  \   <bang>0)
 
 " History
-command! FZFMru call fzf#run({
-\  'source':  v:oldfiles,
-\  'sink':    'e',
-\  'options': '-m -x +s',
-\  'down':    '40%'})
+command! FZFMru call fzf#run({'source': v:oldfiles, 'sink': 'e', 'options': '-m -x +s'})
 
-" Open files in vertical horizontal split
-nnoremap <silent> <Leader>fv :call fzf#run({
-\   'right': winwidth('.') / 2,
-\   'sink':  'vertical botright split' })<CR>
-
+" Rg
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
-command! -nargs=1 -bang Locate call fzf#run(fzf#wrap(
-      \ {'source': 'locate <q-args>', 'options': '-m'}, <bang>0))
+command! -nargs=1 -bang Locate call fzf#run(fzf#wrap({'source': 'locate <q-args>', 'options': '-m'}, <bang>0))
 
+" Mappings
+nnoremap <silent> <C-p> :ProjectFiles<cr>
+nnoremap <silent> <C-b> :Buffers<cr>
+nnoremap <silent> <C-g> :GFiles?<cr>
+nnoremap <silent> <Space> :History<cr>
+nnoremap <silent> <Leader>rg :RG<cr>
+nnoremap <silent> <Leader>lo :Locate<cr>
+nnoremap <silent> <D-S-F> :RG
+map <F6>:FindWordUnderCursor<cr>
 
-"===> coc
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-" position. Coc only does snippet and additional edit on confirm.
-if has('patch8.1.1068')
-  " Use `complete_info` if your (Neo)Vim version supports it.
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-else
-  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-endif
-
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')

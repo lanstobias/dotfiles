@@ -77,8 +77,9 @@ tags
 [._]*.un~
 # End of https://www.gitignore.io/api/git,vim,linux,macos
 
-vim/.vim/bundle/*
+*/bundle/*
 nvim/plugged/*
 vscode/*
 nvim/session/
 tmux/.tmux/plugins
+tmux/.tmux/resurrect/*

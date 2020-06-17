@@ -1,9 +1,5 @@
-"================================ Sources ====================================="
- source ~/dotfiles/nvim/settings/plugins.vim
-
-
 "=============================== General ======================================"
-let mapleader = ","                                                            " Map leader to ,
+let g:mapleader = ","                                                            " Map leader to ,
 set mouse=n                                                                    " Enable mouse
 set encoding=utf8                                                              " Set default encoding to UTF-8 instead of latin1
 set history=50                                                                 " Sets how many lines of history VIM remembers
@@ -17,10 +13,22 @@ set ttimeout                                                                   "
 set ttimeoutlen=100                                                            " Wait milliseonds for terminal to complete key code sequence
 set timeoutlen=3000                                                            " Wait milliseconds for mapped sequence to complete
 set nowrap                                                                     " Do not wrap text
+set guifont=Iosevka
+let g:ruby_host_prog = '/usr/local/bin/neovim-ruby-host'
 
 "===> Configure backspace so it acts as it should act
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
+
+
+"================================ Sources ====================================="
+ source ~/dotfiles/nvim/settings/plugins.vim
+
+ let g:LanguageClient_serverCommands = {
+ \ 'cpp': ['cquery', '--log-file=/tmp/cq.log'],
+ \ 'c': ['cquery', '--log-file=/tmp/cq.log'],
+ \ }
+ nmap <silent> gd <Plug>(coc-definition)
 
 
 "=============================== Visual ======================================="
@@ -37,17 +45,10 @@ set background=dark                                                            "
 set number                                                                     " Activates line numbers
 set mat=2                                                                      " How many tenths of a second to blink when matching brackets
 set ruler                                                                      " Always show current position
-set textwidth=80                                                               " 80 character text witdh
 set laststatus=2                                                               " Height of statusline
 set colorcolumn=80                                                             " Highlight column 80
 set cursorline                                                                 " Highlight the screen line of the cursor
 set noshowmode                                                                 " Hide last line under mode
-
-"===> Error/GIT gutter always visible
-augroup mine
-    au BufWinEnter * sign define mysign
-    au BufWinEnter * exe "sign place 1337 line=1 name=mysign buffer=" . bufnr('%')
-augroup END
 
 "===> Colors
 hi CursorLine ctermbg=NONE guibg=#282828
@@ -74,6 +75,11 @@ set expandtab                                                                  "
 let g:vim_json_syntax_conceal = 0                                              " Show all characters in json files
 au FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o      " Set formatting
 
+"===> Smart insert mode
+if has('nvim')
+    autocmd TermOpen term://* startinsert
+endif
+
 
 "========================= Language Specific =================================="
 au! BufNewFile,BufReadPost *.md set filetype=markdown
@@ -97,6 +103,12 @@ nnoremap <C-k> <C-W><C-K>
 nnoremap <C-l> <C-W><C-L>
 nnoremap <C-h> <C-W><C-H>
 
+" Terminal mode:
+tnoremap <M-h> <c-\><c-n><c-w>h
+tnoremap <M-j> <c-\><c-n><c-w>j
+tnoremap <M-k> <c-\><c-n><c-w>k
+tnoremap <M-l> <c-\><c-n><c-w>l
+
 "===> Other
 " Clear search highlight
 nnoremap <silent> <CR> :nohlsearch<CR><C-L>
@@ -113,12 +125,15 @@ noremap <Leader>P "+p
 " Open netrw
 nnoremap - :e dummynetrwbuf \| Explore \| bw! dummynetrwbuf <CR>
 
+" Start terminal mode
+nmap <Leader>tt :terminal<CR>
+
 "===> Ctags
 nnoremap <Leader>gd :only<bar>vsplit<CR>gd
 
 "===> F-keys
 map <F8> :set ignorecase! ignorecase?<CR>
-map <F2> <Plug>(coc-definition)
+"map <F2> <Plug>(coc-definition)
 map <F4> :call CurtineIncSw()<CR>
 nmap <F8> :TagbarToggle<CR>
 
