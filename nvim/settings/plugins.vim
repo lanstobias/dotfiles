@@ -6,29 +6,36 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" Installed plugins
 call plug#begin()
-Plug 'tpope/vim-sensible'
-Plug 'vimwiki/vimwiki'
-Plug 'morhetz/gruvbox'
+
+"==> Visual
+Plug 'jaredgorski/SpaceCamp'
 Plug 'ryanoasis/vim-devicons'
-Plug 'preservim/nerdtree'
-Plug 'vwxyutarooo/nerdtree-devicons-syntax'
-Plug 'easymotion/vim-easymotion'
-Plug 'haya14busa/incsearch.vim'
-Plug 'Yggdroot/indentLine'
-Plug 'itchyny/lightline.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --no-bash' }
-Plug 'junegunn/fzf.vim'
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
 Plug 'octol/vim-cpp-enhanced-highlight'
-Plug 'ericcurtin/CurtineIncSw.vim'
+Plug 'rhysd/conflict-marker.vim'
+
+"==> IDE-like functionalities
 Plug 'majutsushi/tagbar'
+Plug 'tpope/vim-fugitive'
+Plug 'itchyny/lightline.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'zivyangll/git-blame.vim'
+Plug 'ericcurtin/CurtineIncSw.vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'jackguo380/vim-lsp-cxx-highlight'
+
+"==> Editor
+Plug 'haya14busa/incsearch.vim'
+Plug 'easymotion/vim-easymotion'
+
+"==> Other
+Plug 'tpope/vim-sensible'
 Plug 'sheerun/vim-polyglot'
 Plug 'embear/vim-localvimrc'
-Plug 'preservim/nerdcommenter'
 Plug 'christoomey/vim-tmux-navigator'
+
 call plug#end()
 
 
@@ -50,8 +57,37 @@ let g:vimwiki_list = [
                     \]
 autocmd FileType vimwiki map <Leader>d :VimwikiMakeDiaryNote
 
-"===> NerdTree
-nmap <silent> <C-n> :NERDTreeFind<cr>
+"===> coc-explorer
+let g:coc_explorer_global_presets = {
+\   'floating': {
+\     'position': 'floating',
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'floatingTop': {
+\     'position': 'floating',
+\     'floating-position': 'center-top',
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'floatingLeftside': {
+\     'position': 'floating',
+\     'floating-position': 'left-center',
+\     'floating-width': 50,
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'floatingRightside': {
+\     'position': 'floating',
+\     'floating-position': 'right-center',
+\     'floating-width': 50,
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'simplify': {
+\     'file-child-template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
+\   }
+\ }
+
+" Use preset argument to open it
+nmap <C-n> :CocCommand explorer<CR>
+nmap <Leader>ef :CocCommand explorer --preset floating<CR>
 
 
 "===> Goyo
@@ -101,7 +137,7 @@ let g:indentLine_char = '¦'
 
 "===> lightline
 let g:lightline = {
-      \ 'colorscheme': 'gruvbox',
+      \ 'colorscheme': 'jellybeans',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
@@ -122,6 +158,9 @@ nnoremap <leader>gds :Gdiffsplit!<CR>
 nnoremap <leader>gm :Git mergetool<CR>
 nnoremap gdh :diffget //2 <bar> diffupdate<CR>
 nnoremap gdl :diffget //3 <bar> diffupdate<CR>
+
+"===> Fugitive
+nnoremap <Leader>b :<C-u>call gitblame#echo()<CR>
 
 
 "===> fzf / fzf-mru
@@ -185,6 +224,12 @@ command! FZFMru call fzf#run({'source': v:oldfiles, 'sink': 'e', 'options': '-m 
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 command! -nargs=1 -bang Locate call fzf#run(fzf#wrap({'source': 'locate <q-args>', 'options': '-m'}, <bang>0))
 
+" conflict-marker
+highlight ConflictMarkerBegin guibg=#2f7366
+highlight ConflictMarkerOurs guibg=#2e5049
+highlight ConflictMarkerTheirs guibg=#344f69
+highlight ConflictMarkerEnd guibg=#2f628e
+
 " Mappings
 nnoremap <silent> <C-p> :ProjectFiles<cr>
 nnoremap <silent> <C-b> :Buffers<cr>
@@ -195,3 +240,82 @@ nnoremap <silent> <Leader>lo :Locate<cr>
 nnoremap <silent> <D-S-F> :RG
 map <F6>:FindWordUnderCursor<cr>
 
+"===> coc
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+let g:LanguageClient_serverCommands = {
+ \ 'cpp': ['clangd', '-background-index',],
+ \ }
+
+let g:LanguageClient_serverStderr = '/tmp/clangd.stderr'
+
+function SetLSPShortcuts()
+  " ...
+  " Previous bindings
+  " ...
+  nnoremap <leader>ll :call LanguageClient#debugInfo()<CR>
+endfunction()
+
+" Use tab for trigger completion with characters ahead and navigate.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+if exists('*complete_info')
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>

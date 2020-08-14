@@ -1,13 +1,11 @@
 {
-  "languageserver": {
-    "cquery": {
-      "command": "/usr/bin/cquery",
-      "args": ["--log-file=/tmp/cq.log"],
-      "filetypes": ["c", "cpp"],
-      "rootPatterns": ["compile_flags.txt", "compile_commands.json", ".git/", ".hg/"],
-      "initializationOptions": {
-        "cacheDirectory": "/tmp/cquery"
-      }
-    }
-  }
+  "languageserver":
+  {
+  },
+  "diagnostic.errorSign": "●",
+  "diagnostic.warningSign": "●",
+  "diagnostic.infoSign": "!",
+  "diagnostic.hintSign": "◆",
+  "diagnostic.virtualText": true,
+  "codeLens.enable": true
 }
