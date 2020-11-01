@@ -34,7 +34,7 @@ else
 endif
 
 syntax enable                                                                  " Eneble use of syntax highlighting
-colorscheme spacecamp                                                          " Set colorscheme
+colorscheme gruvbox                                                            " Set colorscheme
 set background=dark                                                            " Default dark colorscheme
 set number                                                                     " Activates line numbers
 set mat=2                                                                      " How many tenths of a second to blink when matching brackets
@@ -45,15 +45,15 @@ set cursorline                                                                 "
 set noshowmode                                                                 " Hide last line under mode
 
 " Always show signcolumn
-set signcolumn=number
+set signcolumn=yes
 
 "===> Colors
-hi CursorLine ctermbg=NONE guibg=#222222
-hi CursorLineNr guifg=#b7cbf4
-hi ColorColumn ctermbg=236 guibg=#222222
-hi Folded ctermbg=236 guibg=#282828
-hi SignColumn ctermbg=237 guibg=#121212
-hi LineNr guibg=#121212 guifg=#444444
+"hi CursorLine ctermbg=NONE guibg=#222222
+"hi CursorLineNr guifg=#b7cbf4
+"hi ColorColumn ctermbg=236 guibg=#222222
+"hi Folded ctermbg=236 guibg=#282828
+"hi SignColumn ctermbg=237 guibg=#121212
+"hi LineNr guibg=#121212 guifg=#444444
 
 "===> Diffcolors
 hi DiffDelete gui=none guifg=#fb4934 guibg=#420909
@@ -101,10 +101,9 @@ nmap <leader>ep :e ~/dotfiles/nvim/settings/plugins.vim<CR>
 
 "===> Movement
 let g:BASH_Ctrl_j = 'off'
-nnoremap <C-j> <C-W><C-J>
-nnoremap <C-k> <C-W><C-K>
-nnoremap <C-l> <C-W><C-L>
-nnoremap <C-h> <C-W><C-H>
+" Scroll horizontally
+map <C-L> 20zl
+map <C-H> 20zh
 
 " Terminal mode
 tnoremap <M-h> <c-\><c-n><c-w>h
@@ -145,7 +144,7 @@ nnoremap <Leader>gd :only<bar>vsplit<CR>gd
 
 "===> F-keys
 map <F8> :set ignorecase! ignorecase?<CR>
-"map <F2> <Plug>(coc-definition)
+map <F2> <Plug>(coc-definition)
 map <F4> :call CurtineIncSw()<CR>
 nmap <F8> :TagbarToggle<CR>
 
@@ -153,3 +152,50 @@ nmap <F8> :TagbarToggle<CR>
 "=============================== Functions ===================================="
 filetype plugin indent on
 
+
+"============================== Status line ==================================="
+set laststatus=2
+set statusline=
+set statusline+=%1*                                                            " Color (white) ---->
+set statusline+=%{StatuslineMode()}                                            " Mode
+
+set statusline+=\ %{fugitive#statusline()}
+
+set statusline+=\ %f                                                           " File
+set statusline+=\ %h%m%r%w                                                     " Flags
+
+set statusline+=%=                                                             " Right align
+
+set statusline+=[%{strlen(&ft)?&ft:'none'},                                    " Filetype
+set statusline+=\ %{strlen(&fenc)?&fenc:&enc},                                 " Encoding
+set statusline+=\ %{&fileformat}]                                              " Fileformat
+
+set statusline+=\ %p%%
+set statusline+=\ %l:%c                                                        " Cursor line:column
+
+hi User1 ctermbg=black ctermfg=white guibg=#32302f guifg=#ebdbb2
+hi User2 ctermbg=lightgreen ctermfg=black guibg=default guifg=white
+hi User3 ctermbg=black ctermfg=lightblue guibg=black guifg=lightblue
+hi User4 ctermbg=black ctermfg=lightgreen guibg=black guifg=lightgreen
+hi User5 ctermbg=black ctermfg=magenta guibg=black guifg=magenta
+
+function! StatuslineMode()
+  let l:mode=mode()
+  if l:mode==#"n"
+     return "NORMAL"
+  elseif l:mode==?"v"
+    return "VISUAL"
+  elseif l:mode==#"i"
+    return "INSERT"
+  elseif l:mode==#"R"
+    return "REPLACE"
+  elseif l:mode==?"s"
+    return "SELECT"
+  elseif l:mode==#"t"
+    return "TERMINAL"
+  elseif l:mode==#"c"
+    return "COMMAND"
+  elseif l:mode==#"!"
+    return "SHELL"
+  endif
+endfunction

@@ -6,6 +6,7 @@
   "diagnostic.warningSign": "●",
   "diagnostic.infoSign": "!",
   "diagnostic.hintSign": "◆",
-  "diagnostic.virtualText": true,
-  "codeLens.enable": true
+  "diagnostic.virtualText": false,
+  "codeLens.enable": false,
+  "diagnostic.displayByAle": false
 }

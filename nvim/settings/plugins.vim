@@ -9,15 +9,16 @@ endif
 call plug#begin()
 
 "==> Visual
-Plug 'jaredgorski/SpaceCamp'
+Plug 'morhetz/gruvbox'
 Plug 'ryanoasis/vim-devicons'
-Plug 'octol/vim-cpp-enhanced-highlight'
+@Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'rhysd/conflict-marker.vim'
+Plug 'Yggdroot/indentLine'
 
 "==> IDE-like functionalities
 Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-fugitive'
-Plug 'itchyny/lightline.vim'
+Plug 'tommcdo/vim-fugitive-blame-ext'
 Plug 'airblade/vim-gitgutter'
 Plug 'zivyangll/git-blame.vim'
 Plug 'ericcurtin/CurtineIncSw.vim'
@@ -25,6 +26,13 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'jackguo380/vim-lsp-cxx-highlight'
+Plug 'dominikduda/vim_current_word'
+"Plug 'dense-analysis/ale'
+"Plug 'autozimu/LanguageClient-neovim', {
+    "\ 'branch': 'next',
+    "\ 'do': 'bash install.sh',
+    "\ }
+
 
 "==> Editor
 Plug 'haya14busa/incsearch.vim'
@@ -34,6 +42,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-sensible'
 Plug 'sheerun/vim-polyglot'
 Plug 'embear/vim-localvimrc'
+Plug 'preservim/nerdcommenter'
 Plug 'christoomey/vim-tmux-navigator'
 
 call plug#end()
@@ -45,6 +54,14 @@ let g:gruvbox_invert_selection=0
 let g:gruvbox_invert_signs=0
 let g:gitgutter_override_sign_column_highlight=1
 let g:gruvbox_contrast_dark='hard'
+
+"===> vim_current_word
+let g:vim_current_word#highlight_twins = 1
+let g:vim_current_word#highlight_current_word = 0
+let g:vim_current_word#highlight_delay = 1000
+let g:vim_current_word#highlight_only_in_focused_window = 1
+hi CurrentWord guibg=#3E3D32 gui=NONE ctermbg=237 cterm=NONE
+hi CurrentWordTwins guibg=#3E3D32 gui=NONE ctermbg=237 cterm=NONE
 
 "===> vimwiki
 au BufRead,BufNewFile *.wiki set filetype=vimwiki
@@ -89,10 +106,12 @@ let g:coc_explorer_global_presets = {
 nmap <C-n> :CocCommand explorer<CR>
 nmap <Leader>ef :CocCommand explorer --preset floating<CR>
 
-
 "===> Goyo
 map <Leader>gy :Goyo<CR>
 
+"===> Ale
+let g:ale_disable_lsp = 1
+let g:ale_c_parse_compile_commands = 1
 
 "===> TaskList
 map <Leader>ts :TaskList<CR>
@@ -119,8 +138,10 @@ map g/ <Plug>(incsearch-stay)
 
 
 "===> vim--localvimrc
-let g:localvimrc_whitelist='/home/ubuntu/stash/lhd_shell/release_tm6_new/*'
-
+let g:localvimrc_whitelist = [
+         \ '/home/ubuntu/stash/lhd_shell/master/.lvimrc',
+         \ '/home/ubuntu/stash/lhd_shell/release_tm6_new/.lvimrc'
+         \ ]
 
 "===> orgmode
 let g:org_agenda_files = ['~/org/index.org','~/org/projects.org']
@@ -135,19 +156,6 @@ let g:indentLine_bgcolor_gui = "NONE"
 let g:indentLine_char = '¦'
 
 
-"===> lightline
-let g:lightline = {
-      \ 'colorscheme': 'jellybeans',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'FugitiveHead'
-      \ },
-      \ }
-
-
 "===> Fugitive
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gbr :Gbranch<CR>
@@ -158,10 +166,16 @@ nnoremap <leader>gds :Gdiffsplit!<CR>
 nnoremap <leader>gm :Git mergetool<CR>
 nnoremap gdh :diffget //2 <bar> diffupdate<CR>
 nnoremap gdl :diffget //3 <bar> diffupdate<CR>
-
-"===> Fugitive
 nnoremap <Leader>b :<C-u>call gitblame#echo()<CR>
 
+"===> vim-tmux-navigator
+let g:tmux_navigator_disable_when_zoomed = 1
+let g:tmux_navigator_no_mappings = 1
+nnoremap <silent> <M-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <M-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <M-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <M-l> :TmuxNavigateRight<cr>
+nnoremap <silent> <M-o> :TmuxNavigatePrevious<cr>
 
 "===> fzf / fzf-mru
 if has("nvim")
@@ -169,7 +183,7 @@ if has("nvim")
   au FileType fzf tunmap <buffer> <Esc>
 endif
 " Window
-"let g:fzf_preview_window = ''
+"let g:fzf_preview_window = '' 
 "if has('nvim-0.4.0') || has("patch-8.2.0191")
     "let g:fzf_layout = { 'window': {
                 "\ 'width': 0.7,
@@ -185,8 +199,6 @@ function! s:find_git_root()
   return system('(git rev-parse --show-superproject-working-tree --show-toplevel | head -1) 2> /dev/null')[:-2]
 endfunction
 
-nnoremap <silent><leader>f :FZF -q <C-R>=expand("<cword>")<CR><CR>
-
 function! RipgrepFzf(query, fullscreen)
   let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
   let initial_command = printf(command_fmt, shellescape(a:query))
@@ -195,6 +207,7 @@ function! RipgrepFzf(query, fullscreen)
   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
 endfunction
 
+" Find word under cursor
 command! -bang -nargs=* FindWordUnderCursor
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always '.shellescape(expand('<cword>')), 1,
@@ -231,16 +244,36 @@ highlight ConflictMarkerTheirs guibg=#344f69
 highlight ConflictMarkerEnd guibg=#2f628e
 
 " Mappings
-nnoremap <silent> <C-p> :ProjectFiles<cr>
-nnoremap <silent> <C-b> :Buffers<cr>
-nnoremap <silent> <C-g> :GFiles?<cr>
-nnoremap <silent> <Space> :History<cr>
-nnoremap <silent> <Leader>rg :RG<cr>
-nnoremap <silent> <Leader>lo :Locate<cr>
-nnoremap <silent> <D-S-F> :RG
-map <F6>:FindWordUnderCursor<cr>
+nnoremap <silent><C-p> :ProjectFiles<cr>
+nnoremap <silent><C-b> :Buffers<cr>
+nnoremap <silent><C-g> :GFiles?<cr>
+nnoremap <silent><C-h> :History<cr>
+nnoremap <silent><Leader>rg :RG<cr>
+nnoremap <silent><Leader>fw :FindWordUnderCursor<cr>
+
+"===> LSP
+" Required for operations modifying multiple buffers like rename.
+set hidden
+
+let g:LanguageClient_serverCommands = {
+      \ 'cpp': ['opt/qtcreator-4.1.0/libexec/qtcreator/clang/bin/clang']
+    \ }
+
 
 "===> coc
+let g:coc_user_config = {
+      \ 'languageserver': {
+         \ 'clangd': {
+         \     'command': '/usr/bin/clangd',
+         \     'filetypes': ['c', 'cpp'],
+         \     'initializationOptions': {
+         \         'cache': {'directory': '/tmp'},
+         \         'index': {'threads': 8},
+         \         }
+         \     }
+         \ }
+      \ }
+
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 let g:LanguageClient_serverCommands = {
@@ -283,6 +316,9 @@ if exists('*complete_info')
 else
   inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
+
+" Jump to definition
+"noremap <F2> :call CocAction('jumpDefinition')<CR>
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
