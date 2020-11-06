@@ -1,0 +1,6 @@
+export GST_PLUGIN_SYSTEM_PATH_1_0="/usr/lib/x86_64-linux-gnu/gstreamer-1.0"
+export GST_PLUGIN_SYSTEM_PATH="/usr/lib/x86_64-linux-gnu/gstreamer-1.0"
+export GST_DEBUG="4"
+export GST_TRACERS="latency,stats,rusage"
+export GST_DEBUG_DUMP_DOT_DIR="/home/ubuntu/gstreamer/dotfiles/"
+export GST_DEBUG_FILE="/home/ubuntu/gstreamer/logs/gslog.txt"

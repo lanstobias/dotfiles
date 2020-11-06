@@ -1,0 +1,8 @@
+#!/bin/sh
+
+while true ; do
+  clear
+  #printf "[%s] Output of %s:\n" "$(date)" "$1"
+  ${SHELL-/bin/sh} -c "$1"
+  sleep $2
+done
