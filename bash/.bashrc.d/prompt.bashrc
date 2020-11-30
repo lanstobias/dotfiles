@@ -1,3 +1,5 @@
+source "${HOME}/scripts/git/funcs.sh"
+
 # Set variable identifying the chroot you work in (not used)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
@@ -56,15 +58,6 @@ function parse_git_dirty() {
    fi
 }
 
-function parse_git_branch() {
-   inside_git_repo="$(git rev-parse --is-inside-work-tree 2>/dev/null)"
-   if [[ $inside_git_repo ]]; then
-      echo "($(git rev-parse --abbrev-ref HEAD 2> /dev/null))"
-   fi;
-   #git rev-parse --git-dir 2> /dev/null;
-   #git rev-parse --abbrev-ref HEAD 2> /dev/null | sed -e 's/.*\/\(.*\)/\1/'
-}
-
 # Set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
     xterm-color|*-256color) color_prompt=yes;;
@@ -94,7 +87,7 @@ if [ "$color_prompt" = yes ]; then
       local git_dirty_char="";
       parse_git_dirty __git_branch_color git_dirty_char
 
-      local __git_branch="$(parse_git_branch)";
+      local __git_branch="$(get_current_branch)";
       local __git_status="$git_dirty_char";
       local __prompt_angle="$BRIGHT_GREEN└"
 

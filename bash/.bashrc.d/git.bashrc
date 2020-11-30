@@ -1,3 +1,5 @@
+source "${HOME}/scripts/git/funcs.sh"
+
 # Configs
 export GIT_PAGER='delta'
 
@@ -7,15 +9,16 @@ else
    export RUNNING_NVIM=false
 fi
 
+log='git log --graph --date="short" --pretty="format:%C(auto,yellow bold)%h %C(auto,blue nobold)%>(12,trunc)%cr %C(auto,white dim)%<(15,trunc)%aN %C(auto)%d %C(reset)%s"'
+
 # Aliases
-source ~/scripts/git/funcs.sh
 alias gs='git status -s'
 alias gaa='git add -A'
 alias gcm='git commit -m'
 alias gco='git checkout'
-alias gl='git log --graph --date="short" --pretty="format:%C(auto,yellow bold)%h %C(auto,blue nobold)%>(12,trunc)%cr %C(auto,white dim)%<(14,trunc)%aN %C(reset)%s%C(auto)%d"'
-alias gla='gl --all'
-alias glp='gl -p'
+alias gla='${log} --all'
+alias gl="${log} $(get_current_branch) origin/master"
+alias glp='${log} -p'
 alias gp='git pull'
 alias gf='git fetch'
 alias gd='git diff | delta'
