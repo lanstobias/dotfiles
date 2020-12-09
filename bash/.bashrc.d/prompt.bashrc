@@ -74,32 +74,32 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-if [ "$color_prompt" = yes ]; then
-   PROMPT_DIRTRIM=10
-   export GIT_PS1_SHOWDIRTYSTATE=true
+PROMPT_DIRTRIM=10
+export GIT_PS1_SHOWDIRTYSTATE=true
 
-   function color_my_prompt() {
-      local __user_and_host="$BRIGHT_GREEN┌ "
-      __user_and_host+="$BRIGHT_GREEN\u@\h"
+function color_my_prompt() {
+   local __user_and_host="$BRIGHT_GREEN┌ "
+   __user_and_host+="$BRIGHT_GREEN\u@\h"
 
-      local __cur_location="$BRIGHT_BLUE\w"
-      local __git_branch_color="$LIGHT_GRAY"
-      local git_dirty_char="";
-      parse_git_dirty __git_branch_color git_dirty_char
+   local __cur_location="$BRIGHT_BLUE\w"
+   local __git_branch_color="$LIGHT_GRAY"
+   local git_dirty_char="";
+   parse_git_dirty __git_branch_color git_dirty_char
 
-      local __git_branch="$(get_current_branch)";
-      local __git_status="$git_dirty_char";
-      local __prompt_angle="$BRIGHT_GREEN└"
+   local __git_branch="$(get_current_branch)";
+   local __git_status="$git_dirty_char";
+   local __prompt_angle="$BRIGHT_GREEN└"
 
 
-      local __prompt_tail="$VIOLET$"
-      local __last_color="$WHITE"
-      export PS1="$__user_and_host $__cur_location $__git_branch_color$__git_branch$__git_status\n$__prompt_angle $__prompt_tail$__last_color "
-   }
-else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
-unset color_prompt force_color_prompt
-
+   local __prompt_tail="$VIOLET$"
+   local __last_color="$WHITE"
+   export PS1="$__user_and_host $__cur_location $__git_branch_color$__git_branch$__git_status\n$__prompt_angle $__prompt_tail$__last_color "
+}
+#else
+    #PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+#fi
 # configure PROMPT_COMMAND which is executed each time before PS1
 export PROMPT_COMMAND=color_my_prompt
+
+#unset color_prompt force_color_prompt
+

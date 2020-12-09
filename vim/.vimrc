@@ -78,11 +78,12 @@ if has('nvim')
     autocmd TermOpen term://* startinsert
 endif
 
+set conceallevel=0
 
 "========================= Language Specific =================================="
-au! BufNewFile,BufReadPost *.md set filetype=markdown
-au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+"au! BufNewFile,BufReadPost *.md set filetype=markdown
+"au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
+"autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
 
 "============================== Mappings ======================================"

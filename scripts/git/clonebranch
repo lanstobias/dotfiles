@@ -1,0 +1,21 @@
+#!/bin/bash
+
+url="ssh://git@bbp.epiroc.group:7999/rs-lhd/lhd_shell.git"
+usageMsg="Usage: clonebranch BRANCH PATH"
+
+if [ -z "$1" ] ; then
+    echo $usageMsg
+    exit 1
+fi
+if [ -z "$2" ] ; then
+    echo $usageMsg
+    exit 1
+fi
+
+branch=$1
+path=$2
+
+git clone -b $branch --recurse-submodules $url $path
+echo "Performing git submodule update --init --recursive"
+#rdk cmake -s rcsos-2.4.0_x86_4.4.50-
+#rdk build -b Debug --incredibuild

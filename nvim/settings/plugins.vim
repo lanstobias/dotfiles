@@ -63,17 +63,6 @@ let g:vim_current_word#highlight_only_in_focused_window = 1
 hi CurrentWord guibg=#3E3D32 gui=NONE ctermbg=237 cterm=NONE
 hi CurrentWordTwins guibg=#3E3D32 gui=NONE ctermbg=237 cterm=NONE
 
-"===> vimwiki
-au BufRead,BufNewFile *.wiki set filetype=vimwiki
-let g:vimwiki_list = [
-                        \{'path': '~/notes/work.wiki', 
-                         \'path_html': '~/notes/html',
-                         \'syntax': 'markdown', 'ext': '.md'},
-                        \{'path': '~/notes/logg.wiki',
-                         \'syntax': 'markdown', 'ext': '.md'}
-                    \]
-autocmd FileType vimwiki map <Leader>d :VimwikiMakeDiaryNote
-
 "===> coc-explorer
 let g:coc_explorer_global_presets = {
 \   'floating': {
